@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://raw.githubusercontent.com/zhuxiujia/GoMybatis/master/mybatis-3-mapper.dtd">
+<mapper>
+    <resultMap id="BaseResultMap" tables="biz_user">
+        <id column="id" property="id"/>
+        <result column="name" property="name" langType="string"/>
+        <result column="uuid" property="uuid" langType="string"/>
+        <result column="token" property="token" langType="string"/>
+        <result column="inUse" property="inUse" langType="int"/>
+    </resultMap>
+    <insert id="insertUserData">
+        insert into biz_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != nil">id,</if>
+            <if test="name != nil">name,</if>
+            <if test="token != nil">token,</if>
+            <if test="inUse != nil">inUse,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != nil">#{id},</if>
+            <if test="name != nil">#{name},</if>
+            <if test="token != nil">#{token},</if>
+            <if test="inUse != nil">#{inUse},</if>
+        </trim>
+    </insert>
+    <select id="FetchAllUserData" resultMap="BaseResultMap">
+        SELECT * FROM biz_user
+    </select>
+
+</mapper>
+

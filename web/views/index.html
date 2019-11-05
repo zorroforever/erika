@@ -1,0 +1,63 @@
+
+<html>
+<head>
+	<title>Login</title>
+		<meta charset="utf-8">
+		<link href="web/public/css/style.css" rel='stylesheet' type='text/css' />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="application/x-javascript">
+			addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }
+			function doLogin(){
+				var username=$("#username").val();
+				if (username==""){
+					alert("用户名不能为空！");
+					return;
+				};
+				var password=$("#password").val();
+				if (password==""){
+					alert("密码不能为空！");
+					return;
+				}
+				// $("#loginFrom").submit();
+				$.post("/loginFrom",{username:username,password:password},function (data) {
+					if(data=="1"){
+						//跳转到成功页面
+						location.href ="successPage.html";
+					}else{
+						alert("用户名或者密码不正确!");
+					}
+				});
+			}
+		</script>
+</head>
+<body>
+	 <!-----start-main---->
+	 <div class="main">
+		<div class="login-form">
+			<h1>KAZENOTANI</h1>
+					<div class="head">
+{{/*						<img src="images/user.png" alt=""/>*/}}
+					</div>
+				<form id="loginForm">
+						<input id="username" type="text" class="text" value = 'ユーザー' onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'ユーザー';}" >
+					<br/>
+						<input id="password" type="text" class="text" value = 'パスワード' onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'パスワード';}">
+					<br/>
+						<div class="submit">
+							<input type="submit" onclick="doLogin()" value="登録" >
+					</div>	
+{{/*					<p><a href="#">Forgot Password ?</a></p>*/}}
+				</form>
+			</div>
+			<!--//End-login-form-->
+			 <!-----start-copyright---->
+   					<div class="copy-right">
+						<p>Copyright &copy; 2020.Haruka All rights reserved.</p>
+					</div>
+				<!-----//end-copyright---->
+		</div>
+			 <!-----//end-main---->
+		 		
+<div style="display:none"><script src='web/public/script/base.js' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>
