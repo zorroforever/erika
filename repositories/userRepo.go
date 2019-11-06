@@ -12,12 +12,14 @@ type UserRepository interface {
 	//Exec(query Query, action Query, limit int, mode int) (ok bool)
 
 	SelectAll() (users []datamodels.Biz_user, total int)
+	GetID(id int64) (user datamodels.Biz_user, found bool)
 	//SelectMany(query Query, limit int) (results []datamodels.User)
 	//
 	//InsertOrUpdate(user datamodels.User) (updatedUser datamodels.User, err error)
 	//Delete(query Query, limit int) (deleted bool)
 }
-func NewUserDBRep(source *gorm.DB) UserRepository{
+
+func NewUserDBRep(source *gorm.DB) UserRepository {
 	return &userSQLRepository{source: source}
 }
 
@@ -39,9 +41,13 @@ type userSQLRepository struct {
 // hope you'll find it very useful as well.
 func (r *userSQLRepository) SelectAll() (users []datamodels.Biz_user, total int) {
 
-	qc :=r.source.Model(&datamodels.Biz_user{})
-	qc.Select(&users)
+	qc := r.source.Model(&datamodels.Biz_user{})
+	qc.Find(&users)
 	qc.Count(&total)
 	return
 }
-
+func (r *userSQLRepository) GetID(id int64) (user datamodels.Biz_user, found bool) {
+	qc := r.source.Model(&datamodels.Biz_user{})
+	qc.Where("ID = ?", id).Find(&user)
+	return
+}
