@@ -38,12 +38,12 @@ type UsersController struct {
 // 	return
 // }
 // otherwise just return the datamodels.
-func (c *UsersController) Get() (results []datamodels.Biz_user) {
+func (c *UsersController) Get() (results []datamodels.Biz_user, found bool) {
 	res, cnt := c.Service.GetAll()
 	if cnt > 0 {
-		return res
+		return res, true
 	} else {
-		return []datamodels.Biz_user{}
+		return []datamodels.Biz_user{}, false
 	}
 }
 

@@ -3,8 +3,6 @@
 package controllers
 
 import (
-
-
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
@@ -67,35 +65,35 @@ func (c *UserController) GetRegister() mvc.Result {
 
 // PostRegister handles POST: http://localhost:8080/user/register.
 //func (c *UserController) PostRegister() mvc.Result {
-	// get firstname, username and password from the form.
-	//var (
-	//	firstname = c.Ctx.FormValue("firstname")
-	//	username  = c.Ctx.FormValue("username")
-	//	password  = c.Ctx.FormValue("password")
-	//)
+// get firstname, username and password from the form.
+//var (
+//	firstname = c.Ctx.FormValue("firstname")
+//	username  = c.Ctx.FormValue("username")
+//	password  = c.Ctx.FormValue("password")
+//)
 
-	// create the new user, the password will be hashed by the service.
-	//u, err := c.Service.Create(password, datamodels.User{
-	//	Username:  username,
-	//	Firstname: firstname,
-	//})
+// create the new user, the password will be hashed by the service.
+//u, err := c.Service.Create(password, datamodels.User{
+//	Username:  username,
+//	Firstname: firstname,
+//})
 
-	// set the user's id to this session even if err != nil,
-	// the zero id doesn't matters because .getCurrentUserID() checks for that.
-	// If err != nil then it will be shown, see below on mvc.Response.Err: err.
-	//c.Session.Set(userIDKey, u.ID)
+// set the user's id to this session even if err != nil,
+// the zero id doesn't matters because .getCurrentUserID() checks for that.
+// If err != nil then it will be shown, see below on mvc.Response.Err: err.
+//c.Session.Set(userIDKey, u.ID)
 
-	//return mvc.Response{
-		// if not nil then this error will be shown instead.
-		//Err: err,
-		// redirect to /user/me.
-		//Path: "/user/me",
-		// When redirecting from POST to GET request you -should- use this HTTP status code,
-		// however there're some (complicated) alternatives if you
-		// search online or even the HTTP RFC.
-		// Status "See Other" RFC 7231, however iris can automatically fix that
-		// but it's good to know you can set a custom code;
-		// Code: 303,
+//return mvc.Response{
+// if not nil then this error will be shown instead.
+//Err: err,
+// redirect to /user/me.
+//Path: "/user/me",
+// When redirecting from POST to GET request you -should- use this HTTP status code,
+// however there're some (complicated) alternatives if you
+// search online or even the HTTP RFC.
+// Status "See Other" RFC 7231, however iris can automatically fix that
+// but it's good to know you can set a custom code;
+// Code: 303,
 //	}
 //}
 
@@ -114,52 +112,52 @@ func (c *UserController) GetLogin() mvc.Result {
 	return loginStaticView
 }
 
-// PostLogin handles POST: http://localhost:8080/user/register.
-//func (c *UserController) PostLogin() mvc.Result {
-//	var (
-//		username = c.Ctx.FormValue("username")
-//		password = c.Ctx.FormValue("password")
-//	)
-//
-//	u, found := c.Service.GetByUsernameAndPassword(username, password)
-//
-//	if !found {
-//		return mvc.Response{
-//			Path: "/user/register",
-//		}
-//	}
-//
-//	c.Session.Set(userIDKey, u.ID)
-//
-//	return mvc.Response{
-//		Path: "/user/me",
-//	}
-//}
+//PostLogin handles POST: http://localhost:8080/user/login.
+func (c *UserController) PostLogin() mvc.Result {
+	var (
+		username = c.Ctx.FormValue("username")
+		password = c.Ctx.FormValue("password")
+	)
+
+	u, found := c.Service.GetByUsernameAndPassword(username, password)
+
+	if !found {
+		return mvc.Response{
+			Path: "/user/register",
+		}
+	}
+
+	c.Session.Set(userIDKey, u.ID)
+
+	return mvc.Response{
+		Path: "/user/me",
+	}
+}
 
 // GetMe handles GET: http://localhost:8080/user/me.
-//func (c *UserController) GetMe() mvc.Result {
-//	if !c.isLoggedIn() {
-//		// if it's not logged in then redirect user to the login page.
-//		return mvc.Response{Path: "/user/login"}
-//	}
-//
-//	u, found := c.Service.GetByID(c.getCurrentUserID())
-//	if !found {
-//		// if the  session exists but for some reason the user doesn't exist in the "database"
-//		// then logout and re-execute the function, it will redirect the client to the
-//		// /user/login page.
-//		c.logout()
-//		return c.GetMe()
-//	}
-//
-//	return mvc.View{
-//		Name: "user/me.html",
-//		Data: iris.Map{
-//			"Title": "Profile of " + u.Username,
-//			"User":  u,
-//		},
-//	}
-//}
+func (c *UserController) GetMe() mvc.Result {
+	if !c.isLoggedIn() {
+		// if it's not logged in then redirect user to the login page.
+		return mvc.Response{Path: "/user/login"}
+	}
+
+	u, found := c.Service.GetByID(c.getCurrentUserID())
+	if !found {
+		// if the  session exists but for some reason the user doesn't exist in the "database"
+		// then logout and re-execute the function, it will redirect the client to the
+		// /user/login page.
+		c.logout()
+		return c.GetMe()
+	}
+
+	return mvc.View{
+		Name: "user/me.html",
+		Data: iris.Map{
+			"Title": "Profile of " + u.Name,
+			"User":  u,
+		},
+	}
+}
 
 // AnyLogout handles All/Any HTTP Methods for: http://localhost:8080/user/logout.
 func (c *UserController) AnyLogout() {

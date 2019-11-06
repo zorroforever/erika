@@ -13,6 +13,7 @@ type UserRepository interface {
 
 	SelectAll() (users []datamodels.Biz_user, total int)
 	GetID(id int64) (user datamodels.Biz_user, found bool)
+	GetByUsernameAndPassword(username string, password string) (user datamodels.Biz_user, found bool)
 	//SelectMany(query Query, limit int) (results []datamodels.User)
 	//
 	//InsertOrUpdate(user datamodels.User) (updatedUser datamodels.User, err error)
@@ -49,5 +50,21 @@ func (r *userSQLRepository) SelectAll() (users []datamodels.Biz_user, total int)
 func (r *userSQLRepository) GetID(id int64) (user datamodels.Biz_user, found bool) {
 	qc := r.source.Model(&datamodels.Biz_user{})
 	qc.Where("ID = ?", id).Find(&user)
+	if user.IsValid() == false {
+		found = false
+	} else {
+		found = true
+	}
+	return
+}
+
+func (r *userSQLRepository) GetByUsernameAndPassword(username string, password string) (user datamodels.Biz_user, found bool) {
+	qc := r.source.Model(&datamodels.Biz_user{})
+	qc.Where("name = ? AND password = ?", username, password).Find(&user)
+	if user.IsValid() == false {
+		found = false
+	} else {
+		found = true
+	}
 	return
 }

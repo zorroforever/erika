@@ -15,7 +15,7 @@ type UserService interface {
 	GetAll() (users []datamodels.Biz_user, total int)
 	GetByID(id int64) (user datamodels.Biz_user, found bool)
 	//GetByID(id int64) (datamodels.User, bool)
-	//GetByUsernameAndPassword(username, userPassword string) (datamodels.User, bool)
+	GetByUsernameAndPassword(username, userPassword string) (datamodels.Biz_user, bool)
 	//DeleteByID(id int64) bool
 	//
 	//Update(id int64, user datamodels.User) (datamodels.User, error)
@@ -43,4 +43,8 @@ func (s *userService) GetAll() (users []datamodels.Biz_user, total int) {
 
 func (s *userService) GetByID(id int64) (user datamodels.Biz_user, found bool) {
 	return s.repo.GetID(id)
+}
+
+func (s *userService) GetByUsernameAndPassword(username, userPassword string) (user datamodels.Biz_user, found bool) {
+	return s.repo.GetByUsernameAndPassword(username, userPassword)
 }
