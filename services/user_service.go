@@ -12,7 +12,8 @@ import (
 // It's an interface and it's used as interface everywhere
 // because we may need to change or try an experimental different domain logic at the future.
 type UserService interface {
-	GetAll() (users []datamodels.Biz_user,total int)
+	GetAll() (users []datamodels.Biz_user, total int)
+	GetByID(id int64) (user datamodels.Biz_user, found bool)
 	//GetByID(id int64) (datamodels.User, bool)
 	//GetByUsernameAndPassword(username, userPassword string) (datamodels.User, bool)
 	//DeleteByID(id int64) bool
@@ -36,9 +37,10 @@ type userService struct {
 }
 
 // GetAll returns all users.
-func (s *userService) GetAll() (users []datamodels.Biz_user,total int) {
+func (s *userService) GetAll() (users []datamodels.Biz_user, total int) {
 	return s.repo.SelectAll()
 }
 
-
-
+func (s *userService) GetByID(id int64) (user datamodels.Biz_user, found bool) {
+	return s.repo.GetID(id)
+}

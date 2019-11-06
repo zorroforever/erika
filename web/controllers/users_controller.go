@@ -1,8 +1,6 @@
 package controllers
 
 import (
-
-
 	"github.com/kataras/iris/v12"
 	"iris/datamodels"
 	"iris/services"
@@ -40,22 +38,27 @@ type UsersController struct {
 // 	return
 // }
 // otherwise just return the datamodels.
-func (c *UsersController) Get() (results []datamodels.Biz_user,total int) {
-	return c.Service.GetAll()
+func (c *UsersController) Get() (results []datamodels.Biz_user) {
+	res, cnt := c.Service.GetAll()
+	if cnt > 0 {
+		return res
+	} else {
+		return []datamodels.Biz_user{}
+	}
 }
 
 // GetBy returns a user.
 // Demo:
 // curl -i -u admin:password http://localhost:8080/users/1
-//func (c *UsersController) GetBy(id int64) (user datamodels.User, found bool) {
-//	u, found := c.Service.GetByID(id)
-//	if !found {
-//		// this message will be binded to the
-//		// main.go -> app.OnAnyErrorCode -> NotFound -> shared/error.html -> .Message text.
-//		c.Ctx.Values().Set("message", "User couldn't be found!")
-//	}
-//	return u, found // it will throw/emit 404 if found == false.
-//}
+func (c *UsersController) GetBy(id int64) (user datamodels.Biz_user, found bool) {
+	u, found := c.Service.GetByID(id)
+	if !found {
+		// this message will be binded to the
+		// main.go -> app.OnAnyErrorCode -> NotFound -> shared/error.html -> .Message text.
+		c.Ctx.Values().Set("message", "User couldn't be found!")
+	}
+	return u, found // it will throw/emit 404 if found == false.
+}
 
 // PutBy updates a user.
 // Demo:

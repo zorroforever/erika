@@ -1,0 +1,46 @@
+# maven ignore
+target/
+*.jar
+!chinapnr.jar
+!iText-2.1.7.js2.jar
+!iTextAsian.jar
+!jasperreports-5.6.0.jar
+!jasperreports-core-renderer.jar
+!jasperreports-extensions-3.5.3.jar
+!jasperreports-fonts-5.6.0.jar
+!SimSun.jar
+*.war
+*.zip
+*.tar
+*.tar.gz
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+out/
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# system ignore
+.DS_Store
+Thumbs.db
+rebel.xml
+MANIFEST.MF
+
+web.xml
+**/WEB-INF/classes/
+**/WEB-INF/lib/
+catalina.base_IS_UNDEFINED/
+
