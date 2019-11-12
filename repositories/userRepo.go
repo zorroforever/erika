@@ -22,6 +22,7 @@ type UserRepository interface {
 }
 
 func NewUserDBRep(source *gorm.DB) UserRepository {
+	source = source.Table("BIZ_USER")
 	return &userSQLRepository{source: source}
 }
 
@@ -62,15 +63,15 @@ func (r *userSQLRepository) GetID(id int64) (user datamodels.Biz_user, found boo
 func (r *userSQLRepository) GetByUsernameAndPassword(username string, password string) (user datamodels.Biz_user, found bool) {
 	qc := r.source.Model(&datamodels.Biz_user{})
 	qc.Where("name = ? AND password = ?", username, password).Find(&user)
-	if user.IsValid() == false {
-		found = false
-	} else {
+	if user.IsValid() {
 		found = true
+	} else {
+		found = false
 	}
-	return
+	return user, found
 }
 
 func (r *userSQLRepository) CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool) {
-	r.source.Table("BIZ_USER").Create(&user)
+	r.source.Create(&user)
 	return user, true
 }

@@ -8,7 +8,7 @@ package datamodels
 // of the example, we will use this datamodel
 // as the only one User model in our application.
 type Biz_user struct {
-	ID       int64  `json:"id" form:"id" gorm:"AUTO_INCREMENT"`
+	ID       int64  `json:"id" form:"id" gorm:"Column:ID"`
 	Name     string `json:"name" form:"name" gorm:"Column:NAME"`
 	Password string `json:"password" form:"password" gorm:"Column:PASSWORD"`
 	Token    string `json:"token" form:"token" gorm:"Column:TOKEN"`
