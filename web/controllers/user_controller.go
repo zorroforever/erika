@@ -37,7 +37,19 @@ type UserController struct {
 	Session *sessions.Session
 }
 
-const userIDKey = "UserID"
+const (
+	userIDKey = "UserID"
+)
+
+var registerStaticView = mvc.View{
+	Name: "user/register.html",
+	Data: iris.Map{"Title": "User Registration"},
+}
+
+var loginStaticView = mvc.View{
+	Name: "user/login.html",
+	Data: iris.Map{"Title": "User Login"},
+}
 
 func (c *UserController) getCurrentUserID() int64 {
 	userID := c.Session.GetInt64Default(userIDKey, 0)
@@ -46,15 +58,6 @@ func (c *UserController) getCurrentUserID() int64 {
 
 func (c *UserController) isLoggedIn() bool {
 	return c.getCurrentUserID() > 0
-}
-
-func (c *UserController) logout() {
-	c.Session.Destroy()
-}
-
-var registerStaticView = mvc.View{
-	Name: "user/register.html",
-	Data: iris.Map{"Title": "User Registration"},
 }
 
 // GetRegister handles GET: http://localhost:8080/user/register.
@@ -117,11 +120,6 @@ func (c *UserController) PostRegister() (mvc.Result, error) {
 //	}
 //}
 
-var loginStaticView = mvc.View{
-	Name: "user/login.html",
-	Data: iris.Map{"Title": "User Login"},
-}
-
 // GetLogin handles GET: http://localhost:8080/user/login.
 func (c *UserController) GetLogin() mvc.Result {
 	if c.isLoggedIn() {
@@ -177,6 +175,10 @@ func (c *UserController) GetMe() mvc.Result {
 			"User":  u,
 		},
 	}
+}
+
+func (c *UserController) logout() {
+	c.Session.Destroy()
 }
 
 // AnyLogout handles All/Any HTTP Methods for: http://localhost:8080/user/logout.
