@@ -9,10 +9,10 @@ package datamodels
 // as the only one User model in our application.
 type Biz_user struct {
 	ID       int64  `json:"id" form:"id" gorm:"AUTO_INCREMENT"`
-	Name     string `json:"name" form:"name"`
-	Password string `json:"password" form:"password" gorm:"Column:password"`
-	Token    string `json:"token" form:"token"`
-	InUse    int    `json:"inUse" form:"inUse" gorm:"Column:inUse"`
+	Name     string `json:"name" form:"name" gorm:"Column:NAME"`
+	Password string `json:"password" form:"password" gorm:"Column:PASSWORD"`
+	Token    string `json:"token" form:"token" gorm:"Column:TOKEN"`
+	InUse    int    `json:"inUse" form:"inUse" gorm:"Column:IN_USE"`
 }
 
 // IsValid can do some very very simple "low-level" data validations.

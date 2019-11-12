@@ -18,6 +18,7 @@ type UserRepository interface {
 	//
 	//InsertOrUpdate(user datamodels.User) (updatedUser datamodels.User, err error)
 	//Delete(query Query, limit int) (deleted bool)
+	CreateUser(user datamodels.Biz_user) (bizUser datamodels.Biz_user, found bool)
 }
 
 func NewUserDBRep(source *gorm.DB) UserRepository {
@@ -67,4 +68,9 @@ func (r *userSQLRepository) GetByUsernameAndPassword(username string, password s
 		found = true
 	}
 	return
+}
+
+func (r *userSQLRepository) CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool) {
+	r.source.Table("BIZ_USER").Create(&user)
+	return user, true
 }

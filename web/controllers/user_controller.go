@@ -3,9 +3,12 @@
 package controllers
 
 import (
+	"errors"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"iris/datamodels"
+	"strings"
 
 	"iris/services"
 )
@@ -61,6 +64,23 @@ func (c *UserController) GetRegister() mvc.Result {
 	}
 
 	return registerStaticView
+}
+
+// PostRegister handles POST: http://localhost:8080/user/register.
+func (c *UserController) PostRegister() (mvc.Result, error) {
+	var username = c.Ctx.PostValue("username")
+	var password = c.Ctx.PostValue("password")
+	var rePassword = c.Ctx.PostValue("rePassword")
+	if strings.Compare(password, rePassword) != 0 {
+		return nil, errors.New("密码不一致")
+	}
+	user := datamodels.Biz_user{
+		Name:     username,
+		Password: password,
+		InUse:    1,
+	}
+	c.Service.CreateUser(user)
+	return loginStaticView, nil
 }
 
 // PostRegister handles POST: http://localhost:8080/user/register.

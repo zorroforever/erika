@@ -22,7 +22,7 @@ type UserService interface {
 	//UpdatePassword(id int64, newPassword string) (datamodels.User, error)
 	//UpdateUsername(id int64, newUsername string) (datamodels.User, error)
 	//
-	//Create(userPassword string, user datamodels.User) (datamodels.User, error)
+	CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool)
 }
 
 // NewUserService returns the default user service.
@@ -47,4 +47,8 @@ func (s *userService) GetByID(id int64) (user datamodels.Biz_user, found bool) {
 
 func (s *userService) GetByUsernameAndPassword(username, userPassword string) (user datamodels.Biz_user, found bool) {
 	return s.repo.GetByUsernameAndPassword(username, userPassword)
+}
+
+func (s *userService) CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool) {
+	return s.repo.CreateUser(user)
 }
