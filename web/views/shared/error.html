@@ -1,7 +1,28 @@
+<head>
+    <style type="text/css">
+    </style>
+</head>
+
+<body>
 <h1>Error.</h1>
 <h2>An error occurred while processing your request.</h2>
 
-<h3>{{.Message}}</h3>
+<table class="table table-bordered" border="1px solid #ccc" cellspacing="0" cellpadding="0">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Code</th>
+        <th>Message</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="width: 10px">{{.Title}}</td>
+        <td style="width: 10px">{{.Code}}</td>
+        <td style="width: 10px">{{.Message}}</td>
+    </tr>
+    </tbody>
+</table>
 
 <footer>
     <h2>Sitemap</h2>
@@ -13,3 +34,4 @@
     <a href="http://localhost:8080/users">/users</a><br/>
     <a href="http://localhost:8080/users/1">/users/{id}</a><br/>
 </footer>
+</body>

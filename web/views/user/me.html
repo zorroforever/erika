@@ -1,43 +1,41 @@
-<html>
-<head>
-
-
-</head>
-<body>
-<div class="container" xmlns:s="">
+<div class="container">
     <p>
         Welcome back <strong>{{.User.Name}}</strong>!
     </p>
-    <p>
-        Welcome back <strong>{{.TaskList}}</strong>!
 
-        Welcome back <strong>{{.TaskList}}</strong>!
-
-    </p>
-    <table>
-        <tr>
-            <th>任务名</th>
-            <th>任务类型</th>
-            <th>任务内容</th>
-            <th>任务可获得金钱</th>
-            <th>任务可获得经验</th>
-            <th>任务可获得荣誉</th>
-            <th>任务时间限制(分钟数)</th>
-            <th>备注</th>
-        </tr>
-        <s:iterator value="TaskList" id="task">
-            <td>
-                <s:property value="Name"/>
-            </td>
-            <td>{task.Type}</td>
-            <td>{task.Content}</td>
-            <td>{task.Coin}</td>
-            <td>{task.Experience}</td>
-            <td>{task.Honor}</td>
-            <td>{task.TimeLimit}</td>
-            <td>{task.Remark}</td>
-        </s:iterator>
-    </table>
+    <div class="box-body">
+        <table class="table table-bordered" border="1px solid #ccc" cellspacing="0" cellpadding="0">
+            <caption align="top">任务列表</caption>
+            <tbody>
+            <tr>
+                <th style="width: 10px">ID</th>
+                <th>任务名</th>
+                <th>任务类型</th>
+                <th>任务内容</th>
+                <th>任务可获得金钱</th>
+                <th>任务可获得经验</th>
+                <th>任务可获得荣誉</th>
+                <th>任务时间限制(分钟数)</th>
+                <th>任务状态</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            {{range $i, $v := .TaskList}}
+                <tr>
+                    <td>{{$v.ID}}</td>
+                    <td>{{$v.Name}}</td>
+                    <td>{{$v.Type}}</td>
+                    <td>{{$v.Content}}</td>
+                    <td>{{$v.Coin}}</td>
+                    <td>{{$v.Experience}}</td>
+                    <td>{{$v.Honor}}</td>
+                    <td>{{$v.TimeLimit}}</td>
+                    <td>{{$v.Status}}</td>
+                    <td>{{$v.Remark}}</td>
+                    <td><a href="/task/scramble/task/{{$v.ID}}"><span class="label label-primary">抢任务</span></a></td>
+                </tr>
+            {{end}}
+            </tbody>
+        </table>
+    </div>
 </div>
-</body>
-</html>

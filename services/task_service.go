@@ -7,6 +7,7 @@ import (
 
 type TaskService interface {
 	GetAllTaskList() []datamodels.BizTask
+	ScrambleTask(userId int64, taskId int) (bool, error)
 }
 
 func NewTaskService(repo repositories.TaskRepository) TaskService {
@@ -21,4 +22,8 @@ type taskService struct {
 
 func (s *taskService) GetAllTaskList() []datamodels.BizTask {
 	return s.repo.GetAllTaskList()
+}
+
+func (s *taskService) ScrambleTask(userId int64, taskId int) (bool, error) {
+	return s.repo.ScrambleTask(userId, taskId)
 }

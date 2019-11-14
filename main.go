@@ -128,6 +128,14 @@ func main() {
 	)
 	user.Handle(new(controllers.UserController))
 
+	task := mvc.New(app.Party("/task"))
+	task.Register(
+		userService,
+		taskService,
+		sessManager.Start,
+	)
+	task.Handle(new(controllers.TaskController))
+
 	// http://localhost:8080/noexist
 	// and all controller's methods like
 	// http://localhost:8080/users/1
