@@ -16,11 +16,12 @@ import (
 	"time"
 )
 
-func checkErr(err error){
-	if err!=nil{
+func checkErr(err error) {
+	if err != nil {
 		panic(err)
 	}
 }
+
 //var xmlBytes = []byte(`
 //<?xml version="1.0" encoding="UTF-8"?>
 //<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -99,8 +100,11 @@ func main() {
 	//	app.Logger().Fatalf("error while loading the users: %v", err)
 	//	return
 	//}
-	repo := repositories.NewUserDBRep(db)
-	userService := services.NewUserService(repo)
+	userRepo := repositories.NewUserDBRep(db)
+	userService := services.NewUserService(userRepo)
+
+	taskRepo := repositories.NewTaskDBRep(db)
+	taskService := services.NewTaskService(taskRepo)
 
 	// "/users" based mvc application.
 	users := mvc.New(app.Party("/users"))
@@ -119,6 +123,7 @@ func main() {
 	user := mvc.New(app.Party("/user"))
 	user.Register(
 		userService,
+		taskService,
 		sessManager.Start,
 	)
 	user.Handle(new(controllers.UserController))

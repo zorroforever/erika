@@ -33,6 +33,8 @@ type UserController struct {
 	// is binded from the main application.
 	Service services.UserService
 
+	TaskService services.TaskService
+
 	// Session, binded using dependency injection from the main.go.
 	Session *sessions.Session
 }
@@ -167,12 +169,13 @@ func (c *UserController) GetMe() mvc.Result {
 		c.logout()
 		return c.GetMe()
 	}
-
+	taskList := c.TaskService.GetAllTaskList()
 	return mvc.View{
 		Name: "user/me.html",
 		Data: iris.Map{
-			"Title": "Profile of " + u.Name,
-			"User":  u,
+			"Title":    "Profile of " + u.Name,
+			"User":     u,
+			"TaskList": taskList,
 		},
 	}
 }
