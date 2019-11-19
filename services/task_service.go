@@ -10,14 +10,14 @@ type TaskService interface {
 	ScrambleTask(userId int64, taskId int) (bool, error)
 }
 
-func NewTaskService(repo repositories.TaskRepository) TaskService {
-	return &taskService{
-		repo: repo,
-	}
-}
-
 type taskService struct {
 	repo repositories.TaskRepository
+}
+
+func NewTaskService() TaskService {
+	return &taskService{
+		repo: repositories.NewTaskDBRep(),
+	}
 }
 
 func (s *taskService) GetAllTaskList() []datamodels.BizTask {

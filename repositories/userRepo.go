@@ -3,6 +3,7 @@ package repositories
 import (
 	"github.com/jinzhu/gorm"
 	"iris/datamodels"
+	"iris/datasource"
 )
 
 // UserRepository handles the basic operations of a user entity/model.
@@ -21,13 +22,13 @@ type UserRepository interface {
 	CreateUser(user datamodels.Biz_user) (bizUser datamodels.Biz_user, found bool)
 }
 
-func NewUserDBRep(source *gorm.DB) UserRepository {
-	source = source.Table("BIZ_USER")
-	return &userSQLRepository{source: source}
-}
-
 type userSQLRepository struct {
 	source *gorm.DB
+}
+
+func NewUserDBRep() UserRepository {
+	source := datasource.DB.Table("BIZ_USER")
+	return &userSQLRepository{source: source}
 }
 
 // Select receives a query function

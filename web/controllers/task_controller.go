@@ -6,7 +6,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
-	"iris/common"
+	"iris/commons"
 	"iris/services"
 )
 
@@ -29,7 +29,7 @@ type TaskController struct {
 func (c *TaskController) GetScrambleTaskBy(taskId int) mvc.Result {
 	userId := c.Session.Get(userIDKey)
 	if _, err := c.TaskService.ScrambleTask(userId.(int64), taskId); err != nil {
-		return common.MvcError(err.Error(), c.Ctx)
+		return commons.MvcError(err.Error(), c.Ctx)
 	}
 	return mvc.Response{
 		Path: "/user/me",

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/jinzhu/gorm"
 	"iris/datamodels"
+	"iris/datasource"
 	"strconv"
 	"time"
 )
@@ -17,12 +18,12 @@ type TaskRepository interface {
 	ScrambleTask(userId int64, taskId int) (bool, error)
 }
 
-func NewTaskDBRep(source *gorm.DB) TaskRepository {
-	return &taskSQLRepository{source: source}
-}
-
 type taskSQLRepository struct {
 	source *gorm.DB
+}
+
+func NewTaskDBRep() TaskRepository {
+	return &taskSQLRepository{source: datasource.DB}
 }
 
 func (r *taskSQLRepository) GetAllTaskList() (bizTask []datamodels.BizTask) {

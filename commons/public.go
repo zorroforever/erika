@@ -1,10 +1,17 @@
-package common
+package commons
 
 import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
+	"github.com/kataras/iris/v12/sessions"
 	"strconv"
+	"time"
 )
+
+var SessManager = sessions.New(sessions.Config{
+	Cookie:  "kazenotani",
+	Expires: 24 * time.Hour,
+})
 
 /*
 MVC错误页面显示

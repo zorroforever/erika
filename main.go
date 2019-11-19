@@ -3,17 +3,12 @@ package main
 import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm"
 	"github.com/kataras/iris/v12"
-	"iris/datasource"
-	"iris/repositories"
+	"github.com/kataras/iris/v12/mvc"
+	"iris/commons"
 	"iris/services"
 	"iris/web/controllers"
-
-	"github.com/kataras/iris/v12/mvc"
-	"github.com/kataras/iris/v12/sessions"
-	"time"
 )
 
 func checkErr(err error) {
@@ -71,27 +66,32 @@ func main() {
 		ctx.View("shared/error.html")
 	})
 
-	config := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=%t&loc=%s",
-		datasource.Username,
-		datasource.Password,
-		datasource.Addr,
-		datasource.Name,
-		true,
-		//"Asia/Shanghai"),
-		"Local")
-	db, err := gorm.Open("mysql", config)
-	db.LogMode(true) // show SQL logger
-	if err != nil {
-		app.Logger().Fatalf("connect to mysql failed")
-		return
-	}
-	db.DB().SetMaxIdleConns(2) // 用于设置闲置的连接数.设置闲置的连接数则当开启的一个连接使用完成后可以放在池里等候下一次使用。
-	db.SingularTable(true)     //设置表名不为负数
-	go keepAlive(db)
-	iris.RegisterOnInterrupt(func() {
-		defer db.Close()
-	})
+	// 初始化controller
+	initRoute(app)
 
+	app.UseGlobal(before)
+	app.DoneGlobal(after)
+
+	app.Run(
+		// Starts the web server at localhost:8080
+		iris.Addr("localhost:8080"),
+		// Ignores err server closed log when CTRL/CMD+C pressed.
+		iris.WithoutServerError(iris.ErrServerClosed),
+		// Enables faster json serialization and more.
+		iris.WithOptimizations,
+	)
+}
+
+func before(ctx iris.Context) {
+	println(fmt.Sprintf("Before the handler: %s", ctx.Path()))
+	ctx.Next()
+}
+
+func after(ctx iris.Context) {
+	println(fmt.Sprintf("After the handler: %s", ctx.Path()))
+}
+
+func initRoute(app *iris.Application) {
 	// ---- Serve our controllers. ----
 
 	// Prepare our repositories and services.
@@ -100,11 +100,8 @@ func main() {
 	//	app.Logger().Fatalf("error while loading the users: %v", err)
 	//	return
 	//}
-	userRepo := repositories.NewUserDBRep(db)
-	userService := services.NewUserService(userRepo)
-
-	taskRepo := repositories.NewTaskDBRep(db)
-	taskService := services.NewTaskService(taskRepo)
+	userService := services.NewUserService()
+	taskService := services.NewTaskService()
 
 	// "/users" based mvc application.
 	users := mvc.New(app.Party("/users"))
@@ -116,15 +113,11 @@ func main() {
 	users.Handle(new(controllers.UsersController))
 
 	// "/user" based mvc application.
-	sessManager := sessions.New(sessions.Config{
-		Cookie:  "kazenotani",
-		Expires: 24 * time.Hour,
-	})
 	user := mvc.New(app.Party("/user"))
 	user.Register(
 		userService,
 		taskService,
-		sessManager.Start,
+		commons.SessManager.Start,
 	)
 	user.Handle(new(controllers.UserController))
 
@@ -132,7 +125,7 @@ func main() {
 	task.Register(
 		userService,
 		taskService,
-		sessManager.Start,
+		commons.SessManager.Start,
 	)
 	task.Handle(new(controllers.TaskController))
 
@@ -144,18 +137,4 @@ func main() {
 	// http://localhost:8080/user/me
 	// http://localhost:8080/user/logout
 	// basic auth: "admin", "password", see "./middleware/basicauth.go" source file.
-	app.Run(
-		// Starts the web server at localhost:8080
-		iris.Addr("localhost:8080"),
-		// Ignores err server closed log when CTRL/CMD+C pressed.
-		iris.WithoutServerError(iris.ErrServerClosed),
-		// Enables faster json serialization and more.
-		iris.WithOptimizations,
-	)
-}
-func keepAlive(dbc *gorm.DB) {
-	for {
-		dbc.DB().Ping()
-		time.Sleep(60 * time.Second)
-	}
 }

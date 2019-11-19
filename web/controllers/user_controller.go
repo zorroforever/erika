@@ -148,7 +148,7 @@ func (c *UserController) PostLogin() mvc.Result {
 	}
 
 	c.Session.Set(userIDKey, u.ID)
-
+	c.Ctx.Next()
 	return mvc.Response{
 		Path: "/user/me",
 	}
@@ -170,6 +170,7 @@ func (c *UserController) GetMe() mvc.Result {
 		return c.GetMe()
 	}
 	taskList := c.TaskService.GetAllTaskList()
+	c.Ctx.Next()
 	return mvc.View{
 		Name: "user/me.html",
 		Data: iris.Map{

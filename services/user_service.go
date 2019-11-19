@@ -25,15 +25,15 @@ type UserService interface {
 	CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool)
 }
 
-// NewUserService returns the default user service.
-func NewUserService(repo repositories.UserRepository) UserService {
-	return &userService{
-		repo: repo,
-	}
-}
-
 type userService struct {
 	repo repositories.UserRepository
+}
+
+// NewUserService returns the default user service.
+func NewUserService() UserService {
+	return &userService{
+		repo: repositories.NewUserDBRep(),
+	}
 }
 
 // GetAll returns all users.
