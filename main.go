@@ -7,7 +7,6 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"iris/commons"
-	"iris/repositories"
 	"iris/services"
 	"iris/web/controllers"
 )

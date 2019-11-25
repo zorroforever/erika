@@ -38,18 +38,6 @@ func (c *TaskController) GetScrambleTaskBy(taskId int) mvc.Result {
 
 func (c *TaskController) GetAllTaskList() {
 	allTaskList := c.TaskService.GetAllTaskList()
-	page := commons.Page{
-		Data:       allTaskList,
-		PageNo:     1,
-		PageSize:   10,
-		TotalCount: 2,
-		TotalPage:  1,
-	}
-	json := &commons.Response{
-		Success:    true,
-		ErrCode:    "",
-		ErrMessage: "",
-		Result:     page,
-	}
-	c.Ctx.JSON(json)
+	response := commons.NewPageResponse(allTaskList)
+	c.Ctx.JSON(response)
 }

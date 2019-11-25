@@ -3,6 +3,7 @@ package repositories
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
+	"iris/commons"
 	"iris/datamodels"
 	"iris/datasource"
 	"strconv"
@@ -13,7 +14,7 @@ import (
 // It's an interface in order to be testable, i.e a memory user repository or
 // a connected to an sql database.
 type TaskRepository interface {
-	GetAllTaskList() []datamodels.BizTask
+	GetAllTaskList() commons.Page
 	GetTaskById(taskId int) datamodels.BizTask
 	ScrambleTask(userId int64, taskId int) (bool, error)
 }
@@ -26,10 +27,18 @@ func NewTaskDBRep() TaskRepository {
 	return &taskSQLRepository{source: datasource.DB}
 }
 
-func (r *taskSQLRepository) GetAllTaskList() (bizTask []datamodels.BizTask) {
+func (r *taskSQLRepository) GetAllTaskList() commons.Page {
 	qc := r.source.Table("BIZ_TASK").Model(&datamodels.BizTask{})
+	var bizTask []datamodels.BizTask
 	qc.Find(&bizTask)
-	return bizTask
+	page := commons.Page{
+		Data:       bizTask,
+		PageNo:     1,
+		PageSize:   commons.PageSize,
+		TotalCount: len(bizTask),
+		TotalPage:  (len(bizTask) / commons.PageSize) + 1,
+	}
+	return page
 }
 
 func (r *taskSQLRepository) GetTaskById(taskId int) (task datamodels.BizTask) {

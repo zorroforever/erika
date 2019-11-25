@@ -1,12 +1,12 @@
 package services
 
 import (
-	"iris/datamodels"
+	"iris/commons"
 	"iris/repositories"
 )
 
 type TaskService interface {
-	GetAllTaskList() []datamodels.BizTask
+	GetAllTaskList() commons.Page
 	ScrambleTask(userId int64, taskId int) (bool, error)
 }
 
@@ -20,7 +20,7 @@ func NewTaskService() TaskService {
 	}
 }
 
-func (s *taskService) GetAllTaskList() []datamodels.BizTask {
+func (s *taskService) GetAllTaskList() commons.Page {
 	return s.repo.GetAllTaskList()
 }
 

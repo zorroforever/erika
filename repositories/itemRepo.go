@@ -15,7 +15,7 @@ type ItemRepository interface {
 	CreateNewItemById(itemId int, uuid string) (bool, datamodels.BizItemLib)
 }
 
-func NewItemDBRep(source *gorm.DB) ItemRepository {
+func NewItemDBRep() ItemRepository {
 	return &itemSQLRepository{source: datasource.DB}
 }
 

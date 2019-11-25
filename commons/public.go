@@ -13,11 +13,14 @@ var SessManager = sessions.New(sessions.Config{
 	Expires: 24 * time.Hour,
 })
 
+// 前端每页每页页数
+var PageSize = 10
+
 type Response struct {
-	Success    bool   `json:"success"`
-	ErrCode    string `json:"errCode"`
-	ErrMessage string `json:"errMessage"`
-	Result     Page   `json:"result"`
+	Success    bool        `json:"success"`
+	ErrCode    int         `json:"errCode"`
+	ErrMessage string      `json:"errMessage"`
+	Result     interface{} `json:"result"`
 }
 
 type Page struct {
@@ -26,6 +29,36 @@ type Page struct {
 	PageSize   int         `json:"pageSize"`
 	TotalCount int         `json:"totalCount"`
 	TotalPage  int         `json:"totalPage"`
+}
+
+func NewResponse(data interface{}) Response {
+	json := Response{
+		Success:    true,
+		ErrCode:    iris.StatusOK,
+		ErrMessage: "",
+		Result:     data,
+	}
+	return json
+}
+
+func NewPageResponse(page Page) Response {
+	json := Response{
+		Success:    true,
+		ErrCode:    iris.StatusInternalServerError,
+		ErrMessage: "",
+		Result:     page,
+	}
+	return json
+}
+
+func NewErrorResponse(errCode int, errMessage string) Response {
+	json := Response{
+		Success:    false,
+		ErrCode:    errCode,
+		ErrMessage: errMessage,
+		Result:     nil,
+	}
+	return json
 }
 
 /*
