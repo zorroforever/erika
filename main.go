@@ -7,6 +7,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"iris/commons"
+	"iris/repositories"
 	"iris/services"
 	"iris/web/controllers"
 )
@@ -103,8 +104,7 @@ func initRoute(app *iris.Application) {
 	userService := services.NewUserService()
 	taskService := services.NewTaskService()
 
-	itemRepo := repositories.NewItemDBRep(db)
-	itemService := services.NewTaskService(itemRepo)
+	itemService := services.NewItemService()
 
 	// "/users" based mvc application.
 	users := mvc.New(app.Party("/users"))
@@ -136,7 +136,7 @@ func initRoute(app *iris.Application) {
 	item.Register(
 		userService,
 		itemService,
-		sessManager.Start,
+		commons.SessManager.Start,
 	)
 	item.Handle(new(controllers.ItemController))
 

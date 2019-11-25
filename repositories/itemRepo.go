@@ -1,10 +1,9 @@
 package repositories
 
 import (
-	"fmt"
-	uuid "github.com/iris-contrib/go.uuid"
 	"github.com/jinzhu/gorm"
 	"iris/datamodels"
+	"iris/datasource"
 )
 
 type ItemRepository interface {
@@ -17,7 +16,7 @@ type ItemRepository interface {
 }
 
 func NewItemDBRep(source *gorm.DB) ItemRepository {
-	return &itemSQLRepository{source: source}
+	return &itemSQLRepository{source: datasource.DB}
 }
 
 type itemSQLRepository struct {

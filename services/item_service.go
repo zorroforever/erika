@@ -15,7 +15,7 @@ type ItemService interface {
 
 func NewItemService(repo repositories.ItemRepository) ItemService {
 	return &itemService{
-		repo: repo,
+		repo: repositories.NewItemDBRep(),
 	}
 }
 
