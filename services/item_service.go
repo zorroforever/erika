@@ -13,7 +13,7 @@ type ItemService interface {
 	CreateNewItemById(itemId int) (bool, datamodels.BizItemLib)
 }
 
-func NewItemService(repo repositories.ItemRepository) ItemService {
+func NewItemService() ItemService {
 	return &itemService{
 		repo: repositories.NewItemDBRep(),
 	}
