@@ -103,6 +103,9 @@ func initRoute(app *iris.Application) {
 	userService := services.NewUserService()
 	taskService := services.NewTaskService()
 
+	itemRepo := repositories.NewItemDBRep(db)
+	itemService := services.NewTaskService(itemRepo)
+
 	// "/users" based mvc application.
 	users := mvc.New(app.Party("/users"))
 	// Add the basic authentication(admin:password) middleware
@@ -128,6 +131,14 @@ func initRoute(app *iris.Application) {
 		commons.SessManager.Start,
 	)
 	task.Handle(new(controllers.TaskController))
+
+	item := mvc.New(app.Party("/item"))
+	item.Register(
+		userService,
+		itemService,
+		sessManager.Start,
+	)
+	item.Handle(new(controllers.ItemController))
 
 	// http://localhost:8080/noexist
 	// and all controller's methods like
