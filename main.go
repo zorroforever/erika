@@ -102,7 +102,7 @@ func initRoute(app *iris.Application) {
 	//}
 	userService := services.NewUserService()
 	taskService := services.NewTaskService()
-	itemService := services.NewItemServ	ice()
+	itemService := services.NewItemService()
 
 	// "/users" based mvc application.
 	users := mvc.New(app.Party("/users"))
