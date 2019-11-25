@@ -13,6 +13,21 @@ var SessManager = sessions.New(sessions.Config{
 	Expires: 24 * time.Hour,
 })
 
+type Response struct {
+	Success    bool   `json:"success"`
+	ErrCode    string `json:"errCode"`
+	ErrMessage string `json:"errMessage"`
+	Result     Page   `json:"result"`
+}
+
+type Page struct {
+	Data       interface{} `json:"data"`
+	PageNo     int         `json:"pageNo"`
+	PageSize   int         `json:"pageSize"`
+	TotalCount int         `json:"totalCount"`
+	TotalPage  int         `json:"totalPage"`
+}
+
 /*
 MVC错误页面显示
 */
