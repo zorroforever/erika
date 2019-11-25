@@ -176,7 +176,7 @@ func (c *UserController) GetMe() mvc.Result {
 		Data: iris.Map{
 			"Title":    "Profile of " + u.Name,
 			"User":     u,
-			"TaskList": taskList,
+			"TaskList": taskList.Data,
 		},
 	}
 }
