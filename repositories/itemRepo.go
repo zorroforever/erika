@@ -13,6 +13,8 @@ type ItemRepository interface {
 	GetItemById(itemId int) datamodels.BizItem
 	// 生成唯一道具ID
 	CreateNewItemById(itemId int, uuid string) (bool, datamodels.BizItemLib)
+	// 按角色id获取道具列表
+	GetItemListByRoleId(roleId int) (count int, lib []datamodels.BizItemLib)
 }
 
 func NewItemDBRep() ItemRepository {
@@ -40,8 +42,17 @@ func (r *itemSQLRepository) CreateNewItemById(itemId int, uuid string) (flg bool
 	qc := r.source.Table("BIZ_ITEM_LIB").Model(&datamodels.BizItemLib{})
 
 	itemLib := datamodels.BizItemLib{Uuid: uuid, ItemCode: itemId, ItemStatus: 0, CmnDBCol: datamodels.CmnDBCol{CreateTime: "now()"}}
-	qc.NewRecord(itemLib) // => 主键为空返回`true`
+	qc.NewRecord(itemLib)
 	qc.Create(&itemLib)
 
 	return true, itemLib
+}
+
+func (r *itemSQLRepository) GetItemListByRoleId(roleId int) (cnt int, itemLib []datamodels.BizItemLib) {
+	qc := r.source.Table("BIZ_ITEM_LIB").Model(&datamodels.BizItemLib{})
+	qc.Where("ROLE_ID = ?", roleId).Count(&cnt)
+	if cnt > 0 {
+		qc.Where("ROLE_ID = ?", roleId).Find(&itemLib)
+	}
+	return cnt, itemLib
 }

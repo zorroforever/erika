@@ -11,6 +11,7 @@ type ItemService interface {
 	GetAllItemList() []datamodels.BizItem
 	GetItemById(itemId int) datamodels.BizItem
 	CreateNewItemById(itemId int) (bool, datamodels.BizItemLib)
+	GetItemListByRoleId(roleId int) []datamodels.MItem
 }
 
 func NewItemService() ItemService {
@@ -45,4 +46,31 @@ func (s *itemService) CreateNewItemById(itemId int) (bool, datamodels.BizItemLib
 		}
 	}
 	return s.repo.CreateNewItemById(itemId, u2.String())
+}
+
+func (s *itemService) GetItemListByRoleId(roleId int) (rMItem []datamodels.MItem) {
+	// 1. 获取item列表
+	count, itemList := s.repo.GetItemListByRoleId(roleId)
+	if count > 0 {
+		// 2。补充item信息
+		rMItem = make([]datamodels.MItem, count)
+		for i, item := range itemList {
+			code := item.ItemCode
+			itemDetail := s.repo.GetItemById(code)
+			rMItem[i] = datamodels.MItem{
+				ID:              code,
+				ItemType:        itemDetail.ItemType,
+				ItemName:        itemDetail.ItemName,
+				ItemQuality:     itemDetail.ItemQuality,
+				ItemDetail:      itemDetail.ItemDetail,
+				ItemInvalidTime: itemDetail.ItemInvalidTime,
+				ItemStatus:      item.ItemStatus,
+				TimeLimit:       itemDetail.TimeLimit,
+				ItemEffect:      itemDetail.ItemEffect,
+				ItemMaxCount:    itemDetail.ItemMaxCount,
+				Uuid:            item.Uuid,
+			}
+		}
+	}
+	return rMItem
 }
