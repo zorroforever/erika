@@ -103,6 +103,7 @@ func initRoute(app *iris.Application) {
 	userService := services.NewUserService()
 	taskService := services.NewTaskService()
 	itemService := services.NewItemService()
+	characterService := services.NewCharacterService()
 
 	// "/users" based mvc application.
 	users := mvc.New(app.Party("/users"))
@@ -137,6 +138,13 @@ func initRoute(app *iris.Application) {
 		commons.SessManager.Start,
 	)
 	item.Handle(new(controllers.ItemController))
+
+	character := mvc.New(app.Party("/character"))
+	character.Register(
+		characterService,
+		commons.SessManager.Start,
+	)
+	character.Handle(new(controllers.CharacterController))
 
 	// http://localhost:8080/noexist
 	// and all controller's methods like
