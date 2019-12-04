@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
+	"iris/commons"
 	"iris/services"
 )
 
@@ -13,8 +14,9 @@ type CharacterController struct {
 }
 
 func (c *CharacterController) GetChpbBy(chId int) {
-	allTaskList := c.CharacterService.GetCharacterPropertyDataByChId(chId)
-	c.Ctx.JSON(allTaskList)
+	characterPropertyRst := c.CharacterService.GetCharacterPropertyDataByChId(chId)
+	response := commons.NewResponse(characterPropertyRst)
+	c.Ctx.JSON(response)
 }
 
 func (c *CharacterController) GetMe() {
