@@ -10,8 +10,10 @@ type BizChProperty struct {
 	HelPoint      int     `json:"helPoint" form:"helPoint" gorm:"Column:HEL_POINT"`
 	ManaPoint     int     `json:"manaPoint" form:"manaPoint" gorm:"Column:MANA_POINT"`
 	PhyAttack     float32 `json:"phyAttack" form:"phyAttack" gorm:"Column:PHY_ATTACK"`
+	ManaAttack    float32 `json:"manaAttack" form:"manaAttack" gorm:"Column:MANA_ATTACK"`
 	PhyDefense    float32 `json:"phyDefense" form:"phyDefense" gorm:"Column:PHY_DEFENSE"`
 	ManaDefense   float32 `json:"manaDefense" form:"manaDefense" gorm:"Column:MANA_DEFENSE"`
+	Evade         int     `json:"evade" form:"evade" gorm:"Column:EVADE"`
 	CompleteEvade int     `json:"completeEvade" form:"completeEvade" gorm:"Column:COMPLETE_EVADE"`
 	Str           int     `json:"str" form:"str" gorm:"Column:STR"`
 	Agl           int     `json:"agl" form:"agl" gorm:"Column:AGL"`

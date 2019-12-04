@@ -14,8 +14,8 @@ type CharacterController struct {
 }
 
 func (c *CharacterController) GetChpbBy(chId int) {
-	characterPropertyRst := c.CharacterService.GetCharacterPropertyDataByChId(chId)
-	response := commons.NewResponse(characterPropertyRst)
+	kv := c.CharacterService.GetCharacterPropertyDataByChId(chId)
+	response := commons.NewResponse(kv)
 	c.Ctx.JSON(response)
 }
 

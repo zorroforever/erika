@@ -23,6 +23,11 @@ type Response struct {
 	Result     interface{} `json:"result"`
 }
 
+type KvModel struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
 type Page struct {
 	Data       interface{} `json:"data"`
 	PageNo     int         `json:"pageNo"`
@@ -73,4 +78,9 @@ func MvcError(msg string, ctx iris.Context) mvc.View {
 			"Message": msg,
 		},
 	}
+}
+
+func FloatToString(input_num float32) string {
+	// to convert a float number to a string
+	return strconv.FormatFloat(float64(input_num), 'f', 6, 64)
 }
