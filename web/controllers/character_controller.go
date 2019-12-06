@@ -19,6 +19,12 @@ func (c *CharacterController) GetChpbBy(chId int) {
 	c.Ctx.JSON(response)
 }
 
+func (c *CharacterController) GetChlistBy(userId int) {
+	chIdList := c.CharacterService.GetCharacterIdByUserId(userId)
+	response := commons.NewResponse(chIdList)
+	c.Ctx.JSON(response)
+}
+
 func (c *CharacterController) GetMe() {
 	c.Ctx.Values().Set("message", "character me is here!")
 }

@@ -10,6 +10,8 @@ import (
 type CharacterService interface {
 	// 按角色id获取角色信息
 	GetCharacterPropertyDataByChId(chId int) []viewmodels.CharacterDispModel
+	// 按用户ID获取角色ID 角色名字等信息
+	GetCharacterIdByUserId(userId int) []viewmodels.CharacterDispModel
 }
 
 func NewCharacterService() CharacterService {
@@ -22,6 +24,21 @@ type characterService struct {
 	repo repositories.CharacterPropertyRepo
 }
 
+func (c *characterService) GetCharacterIdByUserId(userId int) []viewmodels.CharacterDispModel {
+	var kv []viewmodels.CharacterDispModel
+	chId, b := c.repo.GetCharacterIdByUserId(userId)
+	if b {
+		for _, item := range chId {
+			ucd := c.repo.GetUserCharacterDataByChId(item)
+			kv = append(kv, viewmodels.CharacterDispModel{
+				Key:   strconv.Itoa(item),
+				Name:  ucd.ChName,
+				Value: strconv.Itoa(item),
+			})
+		}
+	}
+	return kv
+}
 func (c *characterService) GetCharacterPropertyDataByChId(chId int) []viewmodels.CharacterDispModel {
 	uc := c.repo.GetUserCharacterDataByChId(chId)
 	chp := c.repo.GetCharacterPropertyDataByChId(chId)

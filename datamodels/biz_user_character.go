@@ -7,7 +7,7 @@ type BizUserCharacter struct {
 	ID                int     `json:"id" form:"id" gorm:"Column:ID"`
 	UserId            int     `json:"userId" form:"userId" gorm:"Column:USER_ID"`
 	ChId              int     `json:"chId" form:"chId" gorm:"Column:CH_ID"`
-	ChName            int     `json:"chName" form:"chName" gorm:"Column:CH_NAME"`
+	ChName            string  `json:"chName" form:"chName" gorm:"Column:CH_NAME"`
 	CurrentStatus     int     `json:"currentStatus" form:"currentStatus" gorm:"Column:CURRENT_STATUS"`
 	CurrentExperience int     `json:"currentExperience" form:"currentExperience" gorm:"Column:CURRENT_EXPERIENCE"`
 	Level             int     `json:"level" form:"level" gorm:"Column:LEVEL"`
