@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
+	"iris/commons"
 	"iris/services"
 )
 
@@ -23,3 +24,8 @@ type ItemController struct {
 //		Path: "/user/me",
 //	}
 //}
+func (c *ItemController) GetItemlistBy(chId int) {
+	itemList := c.ItemService.GetItemListByRoleId(chId)
+	response := commons.NewResponse(itemList)
+	c.Ctx.JSON(response)
+}

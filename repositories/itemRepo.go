@@ -14,7 +14,7 @@ type ItemRepository interface {
 	// 生成唯一道具ID
 	CreateNewItemById(itemId int, uuid string) (bool, datamodels.BizItemLib)
 	// 按角色id获取道具列表
-	GetItemListByRoleId(roleId int) (count int, lib []datamodels.BizItemLib)
+	GetItemListByRoleId(chId int) (count int, lib []datamodels.BizItemLib)
 }
 
 func NewItemDBRep() ItemRepository {
@@ -39,7 +39,7 @@ func (r *itemSQLRepository) GetItemById(taskId int) (item datamodels.BizItem) {
 
 func (r *itemSQLRepository) CreateNewItemById(itemId int, uuid string) (flg bool, item datamodels.BizItemLib) {
 
-	qc := r.source.Table("BIZ_ITEM_LIB").Model(&datamodels.BizItemLib{})
+	qc := r.source.Table("BIZ_CH_ITEM_LIB").Model(&datamodels.BizItemLib{})
 
 	itemLib := datamodels.BizItemLib{Uuid: uuid, ItemCode: itemId, ItemStatus: 0, CmnDBCol: datamodels.CmnDBCol{CreateTime: "now()"}}
 	qc.NewRecord(itemLib)
@@ -48,11 +48,11 @@ func (r *itemSQLRepository) CreateNewItemById(itemId int, uuid string) (flg bool
 	return true, itemLib
 }
 
-func (r *itemSQLRepository) GetItemListByRoleId(roleId int) (cnt int, itemLib []datamodels.BizItemLib) {
-	qc := r.source.Table("BIZ_ITEM_LIB").Model(&datamodels.BizItemLib{})
-	qc.Where("ROLE_ID = ?", roleId).Count(&cnt)
+func (r *itemSQLRepository) GetItemListByRoleId(chId int) (cnt int, itemLib []datamodels.BizItemLib) {
+	qc := r.source.Table("BIZ_CH_ITEM_LIB").Model(&datamodels.BizItemLib{})
+	qc.Where("CH_ID = ?", chId).Count(&cnt)
 	if cnt > 0 {
-		qc.Where("ROLE_ID = ?", roleId).Find(&itemLib)
+		qc.Where("CH_ID = ?", chId).Find(&itemLib)
 	}
 	return cnt, itemLib
 }

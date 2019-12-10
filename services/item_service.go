@@ -11,7 +11,8 @@ type ItemService interface {
 	GetAllItemList() []datamodels.BizItem
 	GetItemById(itemId int) datamodels.BizItem
 	CreateNewItemById(itemId int) (bool, datamodels.BizItemLib)
-	GetItemListByRoleId(roleId int) []datamodels.MItem
+	GetItemListByRoleId(chId int) []datamodels.MItem
+	GetItemlistBy(id int) []datamodels.MItem
 }
 
 func NewItemService() ItemService {
@@ -48,9 +49,9 @@ func (s *itemService) CreateNewItemById(itemId int) (bool, datamodels.BizItemLib
 	return s.repo.CreateNewItemById(itemId, u2.String())
 }
 
-func (s *itemService) GetItemListByRoleId(roleId int) (rMItem []datamodels.MItem) {
+func (s *itemService) GetItemListByRoleId(chId int) (rMItem []datamodels.MItem) {
 	// 1. 获取item列表
-	count, itemList := s.repo.GetItemListByRoleId(roleId)
+	count, itemList := s.repo.GetItemListByRoleId(chId)
 	if count > 0 {
 		// 2。补充item信息
 		rMItem = make([]datamodels.MItem, count)
