@@ -12,7 +12,6 @@ type ItemService interface {
 	GetItemById(itemId int) datamodels.BizItem
 	CreateNewItemById(itemId int) (bool, datamodels.BizItemLib)
 	GetItemListByRoleId(chId int) []datamodels.MItem
-	GetItemlistBy(id int) []datamodels.MItem
 }
 
 func NewItemService() ItemService {
