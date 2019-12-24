@@ -3,6 +3,7 @@ package datamodels
 type MItem struct {
 	ID              int    `json:"id" form:"id" gorm:"Column:ID"`
 	ItemType        int    `json:"itemType" form:"itemType" gorm:"Column:ITEM_TYPE"`
+	ItemUrl         string `json:"itemUrl" form:"itemUrl" gorm:"Column:ITEM_URL"`
 	ItemName        string `json:"itemName" form:"itemName" gorm:"Column:ITEM_NAME"`
 	ItemQuality     int    `json:"itemQuality" form:"itemQuality" gorm:"Column:ITEM_QUALITY"`
 	ItemDetail      string `json:"itemDetail" form:"itemDetail" gorm:"Column:ITEM_DETAIL"`

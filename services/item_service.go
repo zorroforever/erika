@@ -69,6 +69,7 @@ func (s *itemService) GetItemListByChId(chId int) (rMItem []datamodels.MItem) {
 				TimeLimit:       itemDetail.TimeLimit,
 				ItemEffect:      itemDetail.ItemEffect,
 				ItemMaxCount:    itemDetail.ItemMaxCount,
+				ItemUrl:         itemDetail.ItemUrl,
 				Uuid:            item.Uuid,
 			}
 		}
@@ -86,20 +87,23 @@ func (s *itemService) GetEquipmentListByChId(chId int) (rMItem []datamodels.MEqp
 			code := item.EquipmentId
 			equipmentDetail := s.repo.GetEquipmentById(code)
 			rMItem[i] = datamodels.MEqpItem{
-				ID:          code,
-				HelPoint:    equipmentDetail.HelPoint,
-				ManaPoint:   equipmentDetail.ManaPoint,
-				PhyDefense:  equipmentDetail.PhyDefense,
-				PhyAttack:   equipmentDetail.PhyAttack,
-				ManaAttack:  equipmentDetail.ManaAttack,
-				ManaDefense: equipmentDetail.ManaDefense,
-				Evade:       equipmentDetail.Evade,
-				Str:         equipmentDetail.Str,
-				Dex:         equipmentDetail.Dex,
-				Int:         equipmentDetail.Int,
-				Vit:         equipmentDetail.Vit,
-				Agl:         equipmentDetail.Agl,
-				Luk:         equipmentDetail.Luk,
+				ID:              code,
+				HelPoint:        equipmentDetail.HelPoint,
+				ManaPoint:       equipmentDetail.ManaPoint,
+				PhyDefense:      equipmentDetail.PhyDefense,
+				PhyAttack:       equipmentDetail.PhyAttack,
+				ManaAttack:      equipmentDetail.ManaAttack,
+				ManaDefense:     equipmentDetail.ManaDefense,
+				Evade:           equipmentDetail.Evade,
+				Str:             equipmentDetail.Str,
+				Dex:             equipmentDetail.Dex,
+				Int:             equipmentDetail.Int,
+				Vit:             equipmentDetail.Vit,
+				Agl:             equipmentDetail.Agl,
+				Luk:             equipmentDetail.Luk,
+				Name:            equipmentDetail.Name,
+				EquipmentDetail: equipmentDetail.EquipmentDetail,
+				EqUrl:           equipmentDetail.EqUrl,
 			}
 		}
 	}
