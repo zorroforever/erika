@@ -24,8 +24,20 @@ type ItemController struct {
 //		Path: "/user/me",
 //	}
 //}
+/**
+获取角色道具栏 道具列表
+*/
 func (c *ItemController) GetItemlistBy(chId int) {
-	itemList := c.ItemService.GetItemListByRoleId(chId)
+	itemList := c.ItemService.GetItemListByChId(chId)
 	response := commons.NewResponse(itemList)
+	c.Ctx.JSON(response)
+}
+
+/**
+获取角色装备栏 装备列表
+*/
+func (c *ItemController) GetEquipmentlistBy(chId int) {
+	equipmentList := c.ItemService.GetEquipmentListByChId(chId)
+	response := commons.NewResponse(equipmentList)
 	c.Ctx.JSON(response)
 }
