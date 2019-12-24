@@ -92,12 +92,6 @@ func (c *characterService) GetCharacterPropertyDataByChId(chId int) []viewmodels
 	})
 
 	kv = append(kv, viewmodels.CharacterDispModel{
-		Key:   "phyDefense",
-		Name:  "物理防御力",
-		Value: commons.FloatToString(chp.PhyDefense),
-	})
-
-	kv = append(kv, viewmodels.CharacterDispModel{
 		Key:   "str",
 		Name:  "力量",
 		Value: strconv.Itoa(chp.Str),
