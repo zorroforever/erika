@@ -12,6 +12,9 @@ type BizTask struct {
 	Remark          string  `json:"remark" form:"remark" gorm:"Column:REMARK"`
 	Status          int     `json:"Status" form:"Status" gorm:"Column:STATUS"`
 	CooperationFlag int     `json:"CooperationFlag" form:"CooperationFlag" gorm:"Column:COOPERATION_FLAG"`
+	MapId           int     `json:"mapId" form:"mapId" gorm:"Column:MAP_ID"`
+	PointX          int     `json:"pointX" form:"pointX" gorm:"Column:POINT_X"`
+	PointY          int     `json:"pointY" form:"pointY" gorm:"Column:POINT_Y"`
 	CreateUser      string  `json:"createUser" form:"createUser" gorm:"Column:CREATE_USER"`
 	CreateTime      string  `json:"createTime" form:"createTime" gorm:"Column:CREATE_TIME"`
 	UpdateUser      string  `json:"updateUser" form:"updateUser" gorm:"Column:UPDATE_USER"`

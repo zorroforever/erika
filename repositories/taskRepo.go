@@ -17,6 +17,7 @@ type TaskRepository interface {
 	GetAllTaskList() commons.Page
 	GetTaskById(taskId int) datamodels.BizTask
 	ScrambleTask(userId int64, taskId int) (bool, error)
+	GetTaskListByMapId(mapId int) (count int, list []datamodels.BizTask)
 }
 
 type taskSQLRepository struct {
@@ -66,4 +67,13 @@ func (r *taskSQLRepository) ScrambleTask(userId int64, taskId int) (bool, error)
 	r.source.Table("BIZ_TASK").Model(&datamodels.BizTask{}).Where("ID = ?", taskId).Update(datamodels.BizTask{Status: 1, UpdateUser: strconv.FormatInt(userId, 10),
 		UpdateTime: time.Now().Format("2006-01-02 15:04:05")})
 	return true, nil
+}
+
+func (r *taskSQLRepository) GetTaskListByMapId(mapId int) (count int, list []datamodels.BizTask) {
+	qc := r.source.Table("BIZ_TASK").Model(&datamodels.BizTask{})
+	qc.Where("MAP_ID = ?", mapId).Count(&count)
+	if count > 0 {
+		qc.Where("MAP_ID = ?", mapId).Find(&list)
+	}
+	return count, list
 }

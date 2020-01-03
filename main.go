@@ -104,6 +104,7 @@ func initRoute(app *iris.Application) {
 	taskService := services.NewTaskService()
 	itemService := services.NewItemService()
 	characterService := services.NewCharacterService()
+	mapService := services.NewMapService()
 
 	// "/users" based mvc application.
 	users := mvc.New(app.Party("/users"))
@@ -138,6 +139,14 @@ func initRoute(app *iris.Application) {
 		commons.SessManager.Start,
 	)
 	item.Handle(new(controllers.ItemController))
+
+	mapObj := mvc.New(app.Party("/map"))
+	mapObj.Register(
+		mapService,
+		taskService,
+		commons.SessManager.Start,
+	)
+	mapObj.Handle(new(controllers.MapController))
 
 	character := mvc.New(app.Party("/character"))
 	character.Register(

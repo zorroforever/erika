@@ -2,12 +2,14 @@ package services
 
 import (
 	"iris/commons"
+	"iris/datamodels"
 	"iris/repositories"
 )
 
 type TaskService interface {
 	GetAllTaskList() commons.Page
 	ScrambleTask(userId int64, taskId int) (bool, error)
+	GetTaskListByMapId(mapId int) (list []datamodels.BizTask)
 }
 
 type taskService struct {
@@ -26,4 +28,13 @@ func (s *taskService) GetAllTaskList() commons.Page {
 
 func (s *taskService) ScrambleTask(userId int64, taskId int) (bool, error) {
 	return s.repo.ScrambleTask(userId, taskId)
+}
+
+func (s *taskService) GetTaskListByMapId(mapId int) (list []datamodels.BizTask) {
+	cnt, list := s.repo.GetTaskListByMapId(mapId)
+	if cnt > 0 {
+		return list
+	} else {
+		return nil
+	}
 }
