@@ -3,6 +3,8 @@ package services
 import (
 	"iris/datamodels"
 	"iris/repositories"
+	"iris/web/viewmodels"
+	"strconv"
 )
 
 // UserService handles CRUID operations of a user datamodel,
@@ -23,6 +25,7 @@ type UserService interface {
 	//UpdateUsername(id int64, newUsername string) (datamodels.User, error)
 	//
 	CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool)
+	GetCharacterposBy(id int) viewmodels.ChPositionModel
 }
 
 type userService struct {
@@ -51,4 +54,12 @@ func (s *userService) GetByUsernameAndPassword(username, userPassword string) (u
 
 func (s *userService) CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool) {
 	return s.repo.CreateUser(user)
+}
+
+func (s *userService) GetCharacterposBy(chId int) (res viewmodels.ChPositionModel) {
+	gcdbci := s.repo.GetChDataByChId(chId)
+	res.MapId, _ = strconv.Atoi(gcdbci.MapId)
+	res.PosX = gcdbci.PointX
+	res.PosY = gcdbci.PointY
+	return res
 }

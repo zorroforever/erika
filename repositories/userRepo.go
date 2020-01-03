@@ -20,6 +20,7 @@ type UserRepository interface {
 	//InsertOrUpdate(user datamodels.User) (updatedUser datamodels.User, err error)
 	//Delete(query Query, limit int) (deleted bool)
 	CreateUser(user datamodels.Biz_user) (bizUser datamodels.Biz_user, found bool)
+	GetChDataByChId(id int) (r datamodels.BizUserCharacter)
 }
 
 type userSQLRepository struct {
@@ -75,4 +76,10 @@ func (r *userSQLRepository) GetByUsernameAndPassword(username string, password s
 func (r *userSQLRepository) CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool) {
 	r.source.Create(&user)
 	return user, true
+}
+
+func (r *userSQLRepository) GetChDataByChId(chId int) (res datamodels.BizUserCharacter) {
+	qc := r.source.Table("BIZ_USER_CHARACTER").Model(&datamodels.BizUserCharacter{})
+	qc.Where("CH_ID = ?", chId).Find(&res).Limit(1)
+	return res
 }

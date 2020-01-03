@@ -142,9 +142,10 @@ func initRoute(app *iris.Application) {
 
 	mapObj := mvc.New(app.Party("/map"))
 	mapObj.Register(
+		commons.SessManager.Start,
 		mapService,
 		taskService,
-		commons.SessManager.Start,
+		userService,
 	)
 	mapObj.Handle(new(controllers.MapController))
 

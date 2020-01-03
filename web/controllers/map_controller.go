@@ -12,6 +12,7 @@ type MapController struct {
 	Session     *sessions.Session
 	MapService  services.MapService
 	TaskService services.TaskService
+	UserService services.UserService
 }
 
 func (c *MapController) GetTasklistBy(mapId int) {
@@ -26,9 +27,7 @@ func (c *MapController) GetTasklistBy(mapId int) {
 
 }
 
-func (c *MapController) GetTasklisttBy(mapId int) {
-	var res commons.Response
-	res.Success = true
-	res.ErrMessage = ""
+func (c *MapController) GetCharacterposBy(chId int) {
+	res := c.UserService.GetCharacterposBy(chId)
 	c.Ctx.JSON(res)
 }
