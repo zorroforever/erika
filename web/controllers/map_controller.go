@@ -4,6 +4,7 @@ import (
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/sessions"
 	"iris/commons"
+	"iris/datamodels"
 	"iris/services"
 )
 
@@ -29,5 +30,17 @@ func (c *MapController) GetTasklistBy(mapId int) {
 
 func (c *MapController) GetCharacterposBy(chId int) {
 	res := c.UserService.GetCharacterposBy(chId)
-	c.Ctx.JSON(res)
+	response := commons.NewResponse(res)
+	c.Ctx.JSON(response)
+}
+
+func (c *MapController) PostUpdpms() {
+	ss := &datamodels.BizChMoveLib{}
+	if err := c.Ctx.ReadJSON(ss); err != nil {
+		panic(err.Error())
+	} else {
+		res := c.MapService.DoUpdPersonMoveStatus(*ss)
+		response := commons.NewResponse(res)
+		c.Ctx.JSON(response)
+	}
 }
