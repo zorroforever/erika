@@ -21,5 +21,6 @@ type mapService struct {
 
 func (s *mapService) DoUpdPersonMoveStatus(in datamodels.BizChMoveLib) (b bool) {
 	b = s.repo.InsPersonMoveStatus(in)
+	s.repo.UpdPersonPosition(in)
 	return b
 }

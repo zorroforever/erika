@@ -39,6 +39,7 @@ func (c *MapController) PostUpdpms() {
 	if err := c.Ctx.ReadJSON(ss); err != nil {
 		panic(err.Error())
 	} else {
+		ss.CreateTime = commons.GetNowStr()
 		res := c.MapService.DoUpdPersonMoveStatus(*ss)
 		response := commons.NewResponse(res)
 		c.Ctx.JSON(response)

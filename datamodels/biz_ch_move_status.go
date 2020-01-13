@@ -10,5 +10,5 @@ type BizChMoveLib struct {
 	TX         int    `json:"tX" form:"tX" gorm:"Column:T_X"`
 	TY         int    `json:"tY" form:"tY" gorm:"Column:T_Y"`
 	ArriveTime string `json:"arriveTime" form:"arriveTime" gorm:"Column:ARRIVE_TIME"`
-	CmnDBCol
+	CmnDBCol2
 }

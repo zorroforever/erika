@@ -1,6 +1,7 @@
 package services
 
 import (
+	"iris/commons"
 	"iris/datamodels"
 	"iris/repositories"
 	"iris/web/viewmodels"
@@ -61,5 +62,14 @@ func (s *userService) GetCharacterposBy(chId int) (res viewmodels.ChPositionMode
 	res.MapId, _ = strconv.Atoi(gcdbci.MapId)
 	res.PosX = gcdbci.PointX
 	res.PosY = gcdbci.PointY
+	if gcdbci.CurrentStatus == commons.CH_MOVING {
+		at := s.repo.DoCheckMoveStatus(chId)
+		if at == "" {
+			gcdbci.CurrentStatus = commons.CH_FREE
+			s.repo.UpdMoveStatus(chId, commons.CH_FREE)
+		} else {
+			res.ArriveTime = at
+		}
+	}
 	return res
 }
