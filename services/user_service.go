@@ -27,6 +27,7 @@ type UserService interface {
 	//
 	CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool)
 	GetCharacterposBy(id int) viewmodels.ChPositionModel
+	GetCharacterDataById(id int) viewmodels.ChDataModel
 }
 
 type userService struct {
@@ -71,5 +72,15 @@ func (s *userService) GetCharacterposBy(chId int) (res viewmodels.ChPositionMode
 			res.ArriveTime = at
 		}
 	}
+	return res
+}
+
+func (s *userService) GetCharacterDataById(chId int) (res viewmodels.ChDataModel) {
+	gcdbci := s.repo.GetChDataByChId(chId)
+	gcpbbci := s.repo.GetChPropertyByChId(chId)
+	res.MapId, _ = strconv.Atoi(gcdbci.MapId)
+	res.ChName = gcdbci.ChName
+	res.Dex = gcpbbci.Dex
+	// 随意添加需要的角色相关字段
 	return res
 }

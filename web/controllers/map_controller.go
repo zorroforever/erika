@@ -16,6 +16,9 @@ type MapController struct {
 	UserService services.UserService
 }
 
+/**
+获取地图任务列表
+*/
 func (c *MapController) GetTasklistBy(mapId int) {
 	kv := c.TaskService.GetTaskListByMapId(mapId)
 	var response commons.Response
@@ -28,12 +31,18 @@ func (c *MapController) GetTasklistBy(mapId int) {
 
 }
 
+/**
+获取角色位置信息
+*/
 func (c *MapController) GetCharacterposBy(chId int) {
 	res := c.UserService.GetCharacterposBy(chId)
 	response := commons.NewResponse(res)
 	c.Ctx.JSON(response)
 }
 
+/**
+更新角色移动信息
+*/
 func (c *MapController) PostUpdpms() {
 	ss := &datamodels.BizChMoveLib{}
 	if err := c.Ctx.ReadJSON(ss); err != nil {
@@ -44,4 +53,10 @@ func (c *MapController) PostUpdpms() {
 		response := commons.NewResponse(res)
 		c.Ctx.JSON(response)
 	}
+}
+
+func (c *MapController) GetCharacterDataBy(chId int) {
+	res := c.UserService.GetCharacterDataById(chId)
+	response := commons.NewResponse(res)
+	c.Ctx.JSON(response)
 }

@@ -24,7 +24,6 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/yudai/pp v2.0.1+incompatible // indirect
-	github.com/zhuxiujia/GoMybatis v5.1.7+incompatible
-	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
+	github.com/zhuxiujia/GoMybatis v5.1.7+incompatible // indirect
 	google.golang.org/appengine v1.6.5 // indirect
 )

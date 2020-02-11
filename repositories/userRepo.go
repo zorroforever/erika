@@ -21,6 +21,7 @@ type UserRepository interface {
 	//Delete(query Query, limit int) (deleted bool)
 	CreateUser(user datamodels.Biz_user) (bizUser datamodels.Biz_user, found bool)
 	GetChDataByChId(id int) (r datamodels.BizUserCharacter)
+	GetChPropertyByChId(id int) (r datamodels.BizChProperty)
 	DoCheckMoveStatus(id int) (c string)
 	UpdMoveStatus(id int, status int)
 }
@@ -96,4 +97,10 @@ func (r *userSQLRepository) DoCheckMoveStatus(chId int) (res string) {
 func (r *userSQLRepository) UpdMoveStatus(chId int, status int) {
 	qc := r.source.Table("BIZ_USER_CHARACTER").Model(&datamodels.BizUserCharacter{})
 	qc.Where("CH_ID = ?", chId).Updates(datamodels.BizUserCharacter{CurrentStatus: status})
+}
+
+func (r *userSQLRepository) GetChPropertyByChId(chId int) (chp datamodels.BizChProperty) {
+	qc := r.source.Table("BIZ_CH_PROPERTY").Model(&datamodels.BizChProperty{})
+	qc.Where("CH_ID = ?", chId).Find(&chp).Limit(1)
+	return chp
 }

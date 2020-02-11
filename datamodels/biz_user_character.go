@@ -16,5 +16,6 @@ type BizUserCharacter struct {
 	ManaDefense       float32 `json:"manaDefense" form:"manaDefense" gorm:"Column:MANA_DEFENSE"`
 	PointX            int     `json:"pointX" form:"pointX" gorm:"Column:POINT_X"`
 	PointY            int     `json:"pointY" form:"pointY" gorm:"Column:POINT_Y"`
+	Dex               int     `json:"dex" form:"dex" gorm:"Column:dex"`
 	CmnDBCol
 }
