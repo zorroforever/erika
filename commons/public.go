@@ -116,6 +116,28 @@ func GetNowStr() string {
 	return time.Now().Format("2006-01-02 15:04:05")
 }
 
+func TimeCovert2Str(t time.Time) string {
+	if t.IsZero() {
+		return ""
+	}
+	return t.Format("2006-01-02 15:04:05")
+}
+
+func StrCover2Time(s string) time.Time {
+	if len(s) < 1 {
+		return time.Now()
+	} else {
+		local, _ := time.LoadLocation("Asia/Shanghai")
+		t, err := time.ParseInLocation("2006-01-02 15:04:05", s, local)
+		//panic(t)
+		if err == nil {
+			return t
+		} else {
+			return time.Now()
+		}
+	}
+}
+
 const CH_FREE int = 1
 const CH_MOVING int = 2
 const CH_TASKING int = 3

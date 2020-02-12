@@ -4,6 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"iris/datamodels"
 	"iris/datasource"
+	"time"
 )
 
 // UserRepository handles the basic operations of a user entity/model.
@@ -20,10 +21,11 @@ type UserRepository interface {
 	//InsertOrUpdate(user datamodels.User) (updatedUser datamodels.User, err error)
 	//Delete(query Query, limit int) (deleted bool)
 	CreateUser(user datamodels.Biz_user) (bizUser datamodels.Biz_user, found bool)
-	GetChDataByChId(id int) (r datamodels.BizUserCharacter)
-	GetChPropertyByChId(id int) (r datamodels.BizChProperty)
-	DoCheckMoveStatus(id int) (c string)
+	GetChDataByChId(chId int) (r datamodels.BizUserCharacter)
+	GetChPropertyByChId(chId int) (r datamodels.BizChProperty)
+	DoCheckMoveStatus(id int) (c time.Time)
 	UpdMoveStatus(id int, status int)
+	GetChMoveDataByChId(chId int) (r datamodels.BizChMoveLib, b bool)
 }
 
 type userSQLRepository struct {
@@ -87,7 +89,7 @@ func (r *userSQLRepository) GetChDataByChId(chId int) (res datamodels.BizUserCha
 	return res
 }
 
-func (r *userSQLRepository) DoCheckMoveStatus(chId int) (res string) {
+func (r *userSQLRepository) DoCheckMoveStatus(chId int) (res time.Time) {
 	var bcml datamodels.BizChMoveLib
 	qc := r.source.Table("BIZ_CH_MOVE_LIB").Model(&datamodels.BizChMoveLib{})
 	qc.Where("ARRIVE_TIME < now() ").Order("ID desc").Find(&bcml).Limit(1)
@@ -103,4 +105,19 @@ func (r *userSQLRepository) GetChPropertyByChId(chId int) (chp datamodels.BizChP
 	qc := r.source.Table("BIZ_CH_PROPERTY").Model(&datamodels.BizChProperty{})
 	qc.Where("CH_ID = ?", chId).Find(&chp).Limit(1)
 	return chp
+}
+
+func (r *userSQLRepository) GetChMoveDataByChId(chId int) (cml datamodels.BizChMoveLib, b bool) {
+	qc := r.source.Table("BIZ_CH_MOVE_LIB").Model(&datamodels.BizChMoveLib{})
+	var cnt int
+	qc.Where("CH_ID = ? AND ARRIVE_TIME > ?", chId, time.Now()).Order("ID desc").Count(&cnt)
+	if cnt > 0 {
+		b = true
+	} else {
+		b = false
+	}
+	if b {
+		qc.Where("CH_ID = ? AND ARRIVE_TIME > ?", chId, time.Now()).Order("ID desc").Find(&cml).Limit(1)
+	}
+	return cml, b
 }

@@ -7,6 +7,7 @@ import (
 
 type MapService interface {
 	DoUpdPersonMoveStatus(in datamodels.BizChMoveLib) (res bool)
+	DoUpdPersonStatus(chId int, status int) (res bool)
 }
 
 func NewMapService() MapService {
@@ -23,4 +24,9 @@ func (s *mapService) DoUpdPersonMoveStatus(in datamodels.BizChMoveLib) (b bool) 
 	b = s.repo.InsPersonMoveStatus(in)
 	s.repo.UpdPersonPosition(in)
 	return b
+}
+
+func (s *mapService) DoUpdPersonStatus(chId int, status int) (res bool) {
+	res = s.repo.UpdPersonStatus(chId, status)
+	return res
 }

@@ -10,6 +10,7 @@ import (
 type MapRepository interface {
 	InsPersonMoveStatus(in datamodels.BizChMoveLib) bool
 	UpdPersonPosition(in datamodels.BizChMoveLib)
+	UpdPersonStatus(int, int) bool
 }
 
 func NewMapDBRepo() MapRepository {
@@ -33,4 +34,10 @@ func (r *mapSQLRepository) UpdPersonPosition(in datamodels.BizChMoveLib) {
 
 	qc := r.source.Table("BIZ_USER_CHARACTER")
 	qc.Model(&datamodels.BizUserCharacter{}).Where("CH_ID = ?", in.ChId).Updates(datamodels.BizUserCharacter{MapId: strconv.Itoa(in.TMapId), PointX: in.TX, PointY: in.TY})
+}
+
+func (r *mapSQLRepository) UpdPersonStatus(chId int, status int) (b bool) {
+	qc := r.source.Table("BIZ_USER_CHARACTER")
+	qc.Model(&datamodels.BizUserCharacter{}).Where("CH_ID = ?", chId).Updates(datamodels.BizUserCharacter{CurrentStatus: status})
+	return true
 }

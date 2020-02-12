@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"iris/commons"
 	"iris/datamodels"
 	"iris/repositories"
@@ -65,11 +66,12 @@ func (s *userService) GetCharacterposBy(chId int) (res viewmodels.ChPositionMode
 	res.PosY = gcdbci.PointY
 	if gcdbci.CurrentStatus == commons.CH_MOVING {
 		at := s.repo.DoCheckMoveStatus(chId)
-		if at == "" {
+		atStr := commons.TimeCovert2Str(at)
+		if atStr == "" {
 			gcdbci.CurrentStatus = commons.CH_FREE
 			s.repo.UpdMoveStatus(chId, commons.CH_FREE)
 		} else {
-			res.ArriveTime = at
+			res.ArriveTime = atStr
 		}
 	}
 	return res
@@ -78,9 +80,22 @@ func (s *userService) GetCharacterposBy(chId int) (res viewmodels.ChPositionMode
 func (s *userService) GetCharacterDataById(chId int) (res viewmodels.ChDataModel) {
 	gcdbci := s.repo.GetChDataByChId(chId)
 	gcpbbci := s.repo.GetChPropertyByChId(chId)
+	gcmdbci, b := s.repo.GetChMoveDataByChId(chId)
 	res.MapId, _ = strconv.Atoi(gcdbci.MapId)
 	res.ChName = gcdbci.ChName
 	res.Dex = gcpbbci.Dex
+	if b {
+		res.CdStart = commons.GetNowStr()
+		res.CdEnd = commons.TimeCovert2Str(gcmdbci.ArriveTime)
+		fmt.Println("出来的时间是=" + res.CdEnd)
+		res.CdNow = res.CdStart
+		res.IsNeedCD = 1
+		res.Sx = gcmdbci.SX
+		res.Sy = gcmdbci.SY
+	} else {
+		res.IsNeedCD = 0
+	}
+
 	// 随意添加需要的角色相关字段
 	return res
 }
