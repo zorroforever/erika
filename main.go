@@ -146,6 +146,7 @@ func initRoute(app *iris.Application) {
 		mapService,
 		taskService,
 		userService,
+		characterService,
 	)
 	mapObj.Handle(new(controllers.MapController))
 

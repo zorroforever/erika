@@ -12,11 +12,12 @@ import (
 )
 
 type MapController struct {
-	Ctx         iris.Context
-	Session     *sessions.Session
-	MapService  services.MapService
-	TaskService services.TaskService
-	UserService services.UserService
+	Ctx              iris.Context
+	Session          *sessions.Session
+	MapService       services.MapService
+	TaskService      services.TaskService
+	UserService      services.UserService
+	CharacterService services.CharacterService
 }
 
 /**
@@ -85,4 +86,15 @@ func (c *MapController) GetCharacterDataBy(chId int) {
 	response := commons.NewResponse(res)
 	fmt.Printf("%+v\n", response)
 	c.Ctx.JSON(response)
+}
+
+func (c *MapController) PostPgtask() {
+	ss := &viewmodels.ChTaskModel{}
+	if err := c.Ctx.ReadJSON(ss); err != nil {
+		panic(err.Error())
+	} else {
+		res := c.CharacterService.DoPersonGetTask(ss.ChId, ss.TaskId)
+		response := commons.NewResponse(res)
+		c.Ctx.JSON(response)
+	}
 }

@@ -12,6 +12,8 @@ type CharacterService interface {
 	GetCharacterPropertyDataByChId(chId int) []viewmodels.CharacterDispModel
 	// 按用户ID获取角色ID 角色名字等信息
 	GetCharacterIdByUserId(userId int) []viewmodels.CharacterDispModel
+	// 给指定角色赋予指定任务
+	DoPersonGetTask(chId int, taskId int) (b bool)
 }
 
 func NewCharacterService() CharacterService {
@@ -128,4 +130,9 @@ func (c *characterService) GetCharacterPropertyDataByChId(chId int) []viewmodels
 		Value: strconv.Itoa(chp.Evade),
 	})
 	return kv
+}
+
+func (c *characterService) DoPersonGetTask(chId int, taskId int) (b bool) {
+	// TODO
+	return b
 }
