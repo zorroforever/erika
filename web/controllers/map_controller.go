@@ -69,10 +69,15 @@ func (c *MapController) PostUpdpms() {
 		c.Ctx.JSON(response)
 	}
 }
-func (c *MapController) PostUpdpmss(chId int, status int) {
-	res := c.MapService.DoUpdPersonStatus(chId, status)
-	response := commons.NewResponse(res)
-	c.Ctx.JSON(response)
+func (c *MapController) PostUpdpmss() {
+	ss := &viewmodels.ChStatusModel{}
+	if err := c.Ctx.ReadJSON(ss); err != nil {
+		panic(err.Error())
+	} else {
+		res := c.MapService.DoUpdPersonStatus(ss.ChId, ss.CurrentStatus)
+		response := commons.NewResponse(res)
+		c.Ctx.JSON(response)
+	}
 }
 
 func (c *MapController) GetCharacterDataBy(chId int) {
