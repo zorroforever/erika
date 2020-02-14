@@ -134,5 +134,6 @@ func (c *characterService) GetCharacterPropertyDataByChId(chId int) []viewmodels
 
 func (c *characterService) DoPersonGetTask(chId int, taskId int) (b bool) {
 	// TODO
+	//var task = repositories.TaskRepository.GetTaskById(taskId)
 	return b
 }
