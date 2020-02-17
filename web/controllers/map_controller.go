@@ -65,6 +65,7 @@ func (c *MapController) PostUpdpms() {
 		updss.ChId = ss.ChId
 		fmt.Printf("%+v\n", *updss)
 		updss.CreateTime = commons.GetNowStr()
+
 		res := c.MapService.DoUpdPersonMoveStatus(*updss)
 		response := commons.NewResponse(res)
 		c.Ctx.JSON(response)
@@ -93,7 +94,9 @@ func (c *MapController) PostPgtask() {
 	if err := c.Ctx.ReadJSON(ss); err != nil {
 		panic(err.Error())
 	} else {
-		res := c.CharacterService.DoPersonGetTask(ss.ChId, ss.TaskId)
+		cdbi := c.UserService.GetCharacterDataById(ss.ChId)
+		userId := cdbi.UserId
+		res, _ := c.TaskService.DoPersonGetTask(userId, ss.ChId, ss.TaskId)
 		response := commons.NewResponse(res)
 		c.Ctx.JSON(response)
 	}

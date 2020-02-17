@@ -84,6 +84,7 @@ func (s *userService) GetCharacterDataById(chId int) (res viewmodels.ChDataModel
 	res.MapId, _ = strconv.Atoi(gcdbci.MapId)
 	res.ChName = gcdbci.ChName
 	res.Dex = gcpbbci.Dex
+	res.UserId = gcdbci.UserId
 	if b {
 		res.CdStart = commons.GetNowStr()
 		res.CdEnd = commons.TimeCovert2Str(gcmdbci.ArriveTime)

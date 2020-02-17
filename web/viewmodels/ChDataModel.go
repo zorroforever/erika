@@ -2,6 +2,7 @@ package viewmodels
 
 type ChDataModel struct {
 	MapId    int    `json:"mapId"`
+	UserId   int    `json:"userId"`
 	ChName   string `json:"chName"`
 	Dex      int    `json:"dex"`
 	Sx       int    `json:"sx"`

@@ -18,6 +18,7 @@ type TaskRepository interface {
 	GetTaskById(taskId int) datamodels.BizTask
 	ScrambleTask(userId int64, taskId int) (bool, error)
 	GetTaskListByMapId(mapId int) (count int, list []datamodels.BizTask)
+	DoPersonGetTask(userId int, chId int, taskId int) (bool, error)
 }
 
 type taskSQLRepository struct {
@@ -68,7 +69,28 @@ func (r *taskSQLRepository) ScrambleTask(userId int64, taskId int) (bool, error)
 		UpdateTime: time.Now().Format("2006-01-02 15:04:05")})
 	return true, nil
 }
+func (r *taskSQLRepository) DoPersonGetTask(userId int, chId int, taskId int) (bool, error) {
+	task := r.GetTaskById(taskId)
+	bizChTask := datamodels.BizChTask{
+		UserId:     userId,
+		ChId:       chId,
+		TaskId:     taskId,
+		Coin:       task.Coin,
+		Experience: task.Experience,
+		Honor:      task.Honor,
+		CreateUser: strconv.Itoa(chId),
+		CreateTime: commons.GetNowStr(),
+	}
+	r.source.Table("BIZ_CH_TASK").Create(&bizChTask)
+	bizTask := datamodels.BizTask{}
+	if r.source.Table("BIZ_TASK").Where("ID = ? ", taskId).First(&bizTask).RecordNotFound() {
+		return false, errors.New("任务不存在")
+	}
+	r.source.Table("BIZ_TASK").Model(&datamodels.BizTask{}).Where("ID = ?", taskId).Update(datamodels.BizTask{Status: 1, UpdateUser: strconv.Itoa(chId),
+		UpdateTime: commons.GetNowStr()})
+	return true, nil
 
+}
 func (r *taskSQLRepository) GetTaskListByMapId(mapId int) (count int, list []datamodels.BizTask) {
 	qc := r.source.Table("BIZ_TASK").Model(&datamodels.BizTask{})
 	qc.Where("MAP_ID = ?", mapId).Count(&count)

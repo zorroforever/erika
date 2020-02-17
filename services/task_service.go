@@ -10,6 +10,7 @@ type TaskService interface {
 	GetAllTaskList() commons.Page
 	ScrambleTask(userId int64, taskId int) (bool, error)
 	GetTaskListByMapId(mapId int) (list []datamodels.BizTask)
+	DoPersonGetTask(userId int, chId int, taskId int) (bool, error)
 }
 
 type taskService struct {
@@ -37,4 +38,8 @@ func (s *taskService) GetTaskListByMapId(mapId int) (list []datamodels.BizTask) 
 	} else {
 		return nil
 	}
+}
+
+func (s *taskService) DoPersonGetTask(userId int, chId int, taskId int) (bool, error) {
+	return s.repo.DoPersonGetTask(userId, chId, taskId)
 }
