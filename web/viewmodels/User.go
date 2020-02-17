@@ -3,7 +3,8 @@ package viewmodels
 import "iris/datamodels"
 
 type User struct {
-	datamodels.Biz_user
+	datamodels.BizUser
+	Characters []datamodels.BizUserCharacter `json:"characters"`
 }
 
 func (m User) IsValid() bool {

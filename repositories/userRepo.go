@@ -13,14 +13,14 @@ import (
 type UserRepository interface {
 	//Exec(query Query, action Query, limit int, mode int) (ok bool)
 
-	SelectAll() (users []datamodels.Biz_user, total int)
-	GetID(id int64) (user datamodels.Biz_user, found bool)
-	GetByUsernameAndPassword(username string, password string) (user datamodels.Biz_user, found bool)
+	SelectAll() (users []datamodels.BizUser, total int)
+	GetID(id int64) (user datamodels.BizUser, found bool)
+	GetByUsernameAndPassword(username string, password string) (user datamodels.BizUser, characters []datamodels.BizUserCharacter, found bool)
 	//SelectMany(query Query, limit int) (results []datamodels.User)
 	//
 	//InsertOrUpdate(user datamodels.User) (updatedUser datamodels.User, err error)
 	//Delete(query Query, limit int) (deleted bool)
-	CreateUser(user datamodels.Biz_user) (bizUser datamodels.Biz_user, found bool)
+	CreateUser(user datamodels.BizUser) (bizUser datamodels.BizUser, found bool)
 	GetChDataByChId(chId int) (r datamodels.BizUserCharacter)
 	GetChPropertyByChId(chId int) (r datamodels.BizChProperty)
 	DoCheckMoveStatus(id int) (c time.Time)
@@ -49,15 +49,15 @@ func NewUserDBRep() UserRepository {
 // It's actually a simple but very clever prototype function
 // I'm using everywhere since I firstly think of it,
 // hope you'll find it very useful as well.
-func (r *userSQLRepository) SelectAll() (users []datamodels.Biz_user, total int) {
+func (r *userSQLRepository) SelectAll() (users []datamodels.BizUser, total int) {
 
-	qc := r.source.Model(&datamodels.Biz_user{})
+	qc := r.source.Model(&datamodels.BizUser{})
 	qc.Find(&users)
 	qc.Count(&total)
 	return
 }
-func (r *userSQLRepository) GetID(id int64) (user datamodels.Biz_user, found bool) {
-	qc := r.source.Model(&datamodels.Biz_user{})
+func (r *userSQLRepository) GetID(id int64) (user datamodels.BizUser, found bool) {
+	qc := r.source.Model(&datamodels.BizUser{})
 	qc.Where("ID = ?", id).Find(&user)
 	if user.IsValid() == false {
 		found = false
@@ -67,18 +67,20 @@ func (r *userSQLRepository) GetID(id int64) (user datamodels.Biz_user, found boo
 	return
 }
 
-func (r *userSQLRepository) GetByUsernameAndPassword(username string, password string) (user datamodels.Biz_user, found bool) {
-	qc := r.source.Model(&datamodels.Biz_user{})
+func (r *userSQLRepository) GetByUsernameAndPassword(username string, password string) (user datamodels.BizUser, characters []datamodels.BizUserCharacter, found bool) {
+	qc := r.source.Model(&datamodels.BizUser{})
 	qc.Where("name = ? AND password = ?", username, password).Find(&user)
 	if user.IsValid() {
 		found = true
+		qc.Table("BIZ_USER_CHARACTER").Select("BIZ_USER_CHARACTER.CH_ID,BIZ_ROLE.CH_NAME").
+			Joins("LEFT JOIN BIZ_USER ON BIZ_USER_CHARACTER.USER_ID = BIZ_USER.ID").Where("BIZ_USER.ID = ?", user.ID).Scan(&characters)
 	} else {
 		found = false
 	}
-	return user, found
+	return user, characters, found
 }
 
-func (r *userSQLRepository) CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool) {
+func (r *userSQLRepository) CreateUser(user datamodels.BizUser) (datamodels.BizUser, bool) {
 	r.source.Create(&user)
 	return user, true
 }

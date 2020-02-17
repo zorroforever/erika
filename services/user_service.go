@@ -16,17 +16,17 @@ import (
 // It's an interface and it's used as interface everywhere
 // because we may need to change or try an experimental different domain logic at the future.
 type UserService interface {
-	GetAll() (users []datamodels.Biz_user, total int)
-	GetByID(id int64) (user datamodels.Biz_user, found bool)
+	GetAll() (users []datamodels.BizUser, total int)
+	GetByID(id int64) (user datamodels.BizUser, found bool)
 	//GetByID(id int64) (datamodels.User, bool)
-	GetByUsernameAndPassword(username, userPassword string) (datamodels.Biz_user, bool)
+	GetByUsernameAndPassword(username, userPassword string) (datamodels.BizUser, []datamodels.BizUserCharacter, bool)
 	//DeleteByID(id int64) bool
 	//
 	//Update(id int64, user datamodels.User) (datamodels.User, error)
 	//UpdatePassword(id int64, newPassword string) (datamodels.User, error)
 	//UpdateUsername(id int64, newUsername string) (datamodels.User, error)
 	//
-	CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool)
+	CreateUser(user datamodels.BizUser) (datamodels.BizUser, bool)
 	GetCharacterposBy(id int) viewmodels.ChPositionModel
 	GetCharacterDataById(id int) viewmodels.ChDataModel
 }
@@ -43,19 +43,19 @@ func NewUserService() UserService {
 }
 
 // GetAll returns all users.
-func (s *userService) GetAll() (users []datamodels.Biz_user, total int) {
+func (s *userService) GetAll() (users []datamodels.BizUser, total int) {
 	return s.repo.SelectAll()
 }
 
-func (s *userService) GetByID(id int64) (user datamodels.Biz_user, found bool) {
+func (s *userService) GetByID(id int64) (user datamodels.BizUser, found bool) {
 	return s.repo.GetID(id)
 }
 
-func (s *userService) GetByUsernameAndPassword(username, userPassword string) (user datamodels.Biz_user, found bool) {
+func (s *userService) GetByUsernameAndPassword(username, userPassword string) (user datamodels.BizUser, characters []datamodels.BizUserCharacter, found bool) {
 	return s.repo.GetByUsernameAndPassword(username, userPassword)
 }
 
-func (s *userService) CreateUser(user datamodels.Biz_user) (datamodels.Biz_user, bool) {
+func (s *userService) CreateUser(user datamodels.BizUser) (datamodels.BizUser, bool) {
 	return s.repo.CreateUser(user)
 }
 

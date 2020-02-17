@@ -4,10 +4,13 @@ package controllers
 
 import (
 	"errors"
+	uuid "github.com/iris-contrib/go.uuid"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
 	"github.com/kataras/iris/v12/sessions"
+	"iris/commons"
 	"iris/datamodels"
+	"iris/web/viewmodels"
 	"strings"
 
 	"iris/services"
@@ -79,7 +82,7 @@ func (c *UserController) PostRegister() (mvc.Result, error) {
 	if strings.Compare(password, rePassword) != 0 {
 		return nil, errors.New("密码不一致")
 	}
-	user := datamodels.Biz_user{
+	user := datamodels.BizUser{
 		Name:     username,
 		Password: password,
 		InUse:    1,
@@ -133,25 +136,23 @@ func (c *UserController) GetLogin() mvc.Result {
 }
 
 //PostLogin handles POST: http://localhost:8080/user/login.
-func (c *UserController) PostLogin() mvc.Result {
-	var (
-		username = c.Ctx.FormValue("username")
-		password = c.Ctx.FormValue("password")
-	)
-
-	u, found := c.Service.GetByUsernameAndPassword(username, password)
+func (c *UserController) PostLogin() error {
+	user := &viewmodels.User{}
+	c.Ctx.ReadJSON(user)
+	u, characters, found := c.Service.GetByUsernameAndPassword(user.Name, user.Password)
 
 	if !found {
-		return mvc.Response{
-			Path: "/user/register",
-		}
+		return errors.New("用户不存在")
 	}
 
+	user.Characters = characters
+	token, _ := uuid.NewV4()
+	user.Token = token.String()
 	c.Session.Set(userIDKey, u.ID)
 	c.Ctx.Next()
-	return mvc.Response{
-		Path: "/user/me",
-	}
+	response := commons.NewResponse(user)
+	c.Ctx.JSON(response)
+	return nil
 }
 
 // GetMe handles GET: http://localhost:8080/user/me.

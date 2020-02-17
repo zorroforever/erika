@@ -7,7 +7,7 @@ package datamodels
 // define completely new fields instead but for the shake
 // of the example, we will use this datamodel
 // as the only one User model in our application.
-type Biz_user struct {
+type BizUser struct {
 	ID       int64  `json:"id" form:"id" gorm:"Column:ID"`
 	Name     string `json:"name" form:"name" gorm:"Column:NAME"`
 	Password string `json:"password" form:"password" gorm:"Column:PASSWORD"`
@@ -16,6 +16,6 @@ type Biz_user struct {
 }
 
 // IsValid can do some very very simple "low-level" data validations.
-func (u Biz_user) IsValid() bool {
+func (u BizUser) IsValid() bool {
 	return u.ID > 0
 }

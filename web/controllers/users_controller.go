@@ -38,19 +38,19 @@ type UsersController struct {
 // 	return
 // }
 // otherwise just return the datamodels.
-func (c *UsersController) Get() (results []datamodels.Biz_user, found bool) {
+func (c *UsersController) Get() (results []datamodels.BizUser, found bool) {
 	res, cnt := c.Service.GetAll()
 	if cnt > 0 {
 		return res, true
 	} else {
-		return []datamodels.Biz_user{}, false
+		return []datamodels.BizUser{}, false
 	}
 }
 
 // GetBy returns a user.
 // Demo:
 // curl -i -u admin:password http://localhost:8080/users/1
-func (c *UsersController) GetBy(id int64) (user datamodels.Biz_user, found bool) {
+func (c *UsersController) GetBy(id int64) (user datamodels.BizUser, found bool) {
 	u, found := c.Service.GetByID(id)
 	if !found {
 		// this message will be binded to the
