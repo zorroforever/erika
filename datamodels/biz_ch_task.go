@@ -14,7 +14,7 @@ type BizChTask struct {
 	JiraUrl             string    `json:"jiraUrl" form:"jiraUrl" gorm:"Column:JIRA_URL"`
 	EstimateDevelopTime int       `json:"estimateDevelopTime" form:"estimateDevelopTime" gorm:"Column:ESTIMATE_DEVELOP_TIME"`
 	StartTime           time.Time `json:"startTime" form:"startTime" gorm:"Column:START_TIME"`
-	EndTime             time.Time `json:"endTime" form:"endTime" gorm:"Column:endTime"`
+	EndTime             time.Time `json:"endTime" form:"endTime" gorm:"Column:END_TIME"`
 	CreateUser          string    `json:"createUser" form:"createUser" gorm:"Column:CREATE_USER"`
 	CreateTime          string    `json:"createTime" form:"createTime" gorm:"Column:CREATE_TIME"`
 	UpdateUser          string    `json:"updateUser" form:"updateUser" gorm:"Column:UPDATE_USER"`
