@@ -72,7 +72,7 @@ func (r *userSQLRepository) GetByUsernameAndPassword(username string, password s
 	qc.Where("name = ? AND password = ?", username, password).Find(&user)
 	if user.IsValid() {
 		found = true
-		qc.Table("BIZ_USER_CHARACTER").Select("BIZ_USER_CHARACTER.CH_ID,BIZ_ROLE.CH_NAME").
+		qc.Table("BIZ_USER_CHARACTER").Select("BIZ_USER_CHARACTER.CH_ID,BIZ_USER_CHARACTER.CH_NAME").
 			Joins("LEFT JOIN BIZ_USER ON BIZ_USER_CHARACTER.USER_ID = BIZ_USER.ID").Where("BIZ_USER.ID = ?", user.ID).Scan(&characters)
 	} else {
 		found = false
