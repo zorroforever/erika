@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"errors"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"iris/commons"
 	"iris/datamodels"
@@ -71,6 +72,10 @@ func (r *taskSQLRepository) ScrambleTask(userId int64, taskId int) (bool, error)
 }
 func (r *taskSQLRepository) DoPersonGetTask(userId int, chId int, taskId int) (bool, error) {
 	task := r.GetTaskById(taskId)
+	currentTime := time.Now().Local()
+	nextT := fmt.Sprintf("%dm", task.TimeLimit)
+	mm, _ := time.ParseDuration(nextT)
+	endTime := currentTime.Add(mm)
 	bizChTask := datamodels.BizChTask{
 		UserId:     userId,
 		ChId:       chId,
@@ -78,9 +83,12 @@ func (r *taskSQLRepository) DoPersonGetTask(userId int, chId int, taskId int) (b
 		Coin:       task.Coin,
 		Experience: task.Experience,
 		Honor:      task.Honor,
+		StartTime:  currentTime,
+		EndTime:    endTime,
 		CreateUser: strconv.Itoa(chId),
 		CreateTime: commons.GetNowStr(),
 	}
+
 	r.source.Table("BIZ_CH_TASK").Create(&bizChTask)
 	bizTask := datamodels.BizTask{}
 	if r.source.Table("BIZ_TASK").Where("ID = ? ", taskId).First(&bizTask).RecordNotFound() {
