@@ -17,26 +17,6 @@ func checkErr(err error) {
 	}
 }
 
-//var xmlBytes = []byte(`
-//<?xml version="1.0" encoding="UTF-8"?>
-//<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-//"https://raw.githubusercontent.com/zhuxiujia/GoMybatis/master/mybatis-3-mapper.dtd">
-//<mapper>
-//    <select id="SelectAll">
-//        SELECT C_APP_ID,N_APP_ID FROM BIZ_APP_COMMON
-//    </select>
-//</mapper>
-//`)
-
-//func get_ly_datas()  (list [] map[string]string){
-//	//dbURI := fmt.Sprintf("%s:%s@(%s)/%s?charset=utf8&parseTime=True&loc=Local",userName, password, ip,dbName)
-//	//db, err := gorm.Open("mysql", dbURI)
-//	//checkErr(err)
-//	//db.First(&user)
-//	//defer db.Close()
-//	mybatis.FinsUserData()
-//	return nil
-//}
 
 //主函数
 func main() {
