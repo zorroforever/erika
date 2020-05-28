@@ -18,15 +18,8 @@ func checkErr(err error) {
 }
 
 
-//主函数
+// メイン関数
 func main() {
-	//app := iris.Default()
-	//
-	//// 路由器
-	//controller.DoRouter(app)
-	//
-	////启动服务监听本地8080端口
-	//app.Run(iris.Addr("127.0.0.1:8080"))
 	app := iris.New()
 	// You got full debug messages, useful when using MVC and you want to make
 	// sure that your code is aligned with the Iris' MVC Architecture.
@@ -46,7 +39,7 @@ func main() {
 		ctx.View("shared/error.html")
 	})
 
-	// 初始化controller
+	// 初期化controller
 	initRoute(app)
 
 	app.UseGlobal(before)
