@@ -10,10 +10,10 @@ import (
 var DB *gorm.DB
 
 const (
-	Username = "robin"
-	Password = "robin"
-	Addr     = "192.168.7.197"
-	Name     = "kazenotani"
+	Username = "u"
+	Password = "p"
+	Addr     = "dbaddress"
+	Name     = "dbname"
 )
 
 func init() {
